@@ -1,5 +1,12 @@
 import './Layout.scss';
 
-export default function Layout() {
-	return <div className='Layout'>Layout</div>;
+export default function Layout({ title, children }) {
+	return (
+		<main className={`Layout ${title}`}>
+			<h1>{title}</h1>
+			<div className='bar'></div>
+			{/* Layout컴포넌트로 감싼 컨텐츠 내용이 아래 children위치에 출력됨 */}
+			{children}
+		</main>
+	);
 }
