@@ -40,7 +40,13 @@ export default function Header({ setDark, isDark }) {
 					</NavLink>
 				</li>
 			</ul>
-			<button onClick={setDark}>theme</button>
+			{/* <button onClick={setDark}>theme</button> */}
+			<div
+				className={`themeBox ${isDark && 'dark'}`}
+				onClick={() => setDark(!isDark)}
+			>
+				<div className='ball'></div>
+			</div>
 		</header>
 	);
 }
