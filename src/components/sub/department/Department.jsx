@@ -32,6 +32,21 @@ export default function Department() {
 					</article>
 				);
 			})}
+			<div className='benefits'>
+				<h2>{`${MemberTit.charAt(0).toUpperCase() + MemberTit.slice(1)}`}</h2>
+				{MemberData.map((member, idx) => {
+					return (
+						<span key={member + idx}>
+							<em></em>
+							<h3>{member.position}</h3>
+							<span>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
+								sunt fugit quidem.
+							</span>
+						</span>
+					);
+				})}
+			</div>
 		</Layout>
 	);
 }
