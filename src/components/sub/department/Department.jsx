@@ -8,7 +8,12 @@ export default function Department() {
 	const [MemberData, setMemberData] = useState([]);
 	const [MemberName, setMemberName] = useState([]);
 	const splitText = useSplitText();
-	const splitRef = useRef(null);
+	const splitRef0 = useRef(null);
+	const splitRef1 = useRef(null);
+	const splitRef2 = useRef(null);
+	const splitRef3 = useRef(null);
+	const splitRef4 = useRef(null);
+	const splitRef5 = useRef(null);
 
 	const path = process.env.PUBLIC_URL; //public 폴더까지의 경로를구하는 구문
 	const fetchDepartmemt = () => {
@@ -23,7 +28,8 @@ export default function Department() {
 	useEffect(() => {
 		fetchDepartmemt();
 		MemberName.forEach((name, idx) => {
-			splitText(splitRef.current, name);
+			console.log(`splitRef${idx}`);
+			splitText(`splitRef${idx}`.current, name);
 		});
 	}, []);
 
@@ -60,7 +66,7 @@ export default function Department() {
 			</div>
 			<div className='splitName'>
 				{MemberName.map((name, idx) => (
-					<p key={idx} ref={splitRef}>
+					<p key={idx} ref={`splitRef${idx}`}>
 						{name}
 					</p>
 				))}
