@@ -19,7 +19,7 @@
 	.bar {
 		width: 50px;
 		height: 1px;
-		background: #111;
+		background: rgba(var(--baseColor-code), 0.2);
 		opacity: 0.7;
 		margin-bottom: 50px;
 	}
