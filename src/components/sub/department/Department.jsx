@@ -5,6 +5,8 @@ import './Department.scss';
 export default function Department() {
 	const [MemberTit, setMemberTit] = useState('');
 	const [MemberData, setMemberData] = useState([]);
+	const [MemberName, setMemberName] = useState([]);
+
 	const path = process.env.PUBLIC_URL; //public 폴더까지의 경로를구하는 구문
 	const fetchDepartmemt = () => {
 		fetch(`${path}/DB/department.json`)
@@ -12,6 +14,7 @@ export default function Department() {
 			.then((json) => {
 				setMemberTit(Object.keys(json)[0]); //객체를 반복돌며 key값만 배열로 반환
 				setMemberData(Object.values(json)[0]); //객체를 반복돌며 value값만 배열로 반환
+				setMemberName(Object.values(json)[0].map((el) => el.name));
 			});
 	};
 	useEffect(() => {
@@ -34,17 +37,24 @@ export default function Department() {
 			})}
 			<div className='benefits'>
 				<h2>{`${MemberTit.charAt(0).toUpperCase() + MemberTit.slice(1)}`}</h2>
-				{MemberData.map((member, idx) => {
-					return (
-						<span key={member + idx}>
-							<em></em>
-							<h3>{member.position}</h3>
-							<span>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
-								sunt fugit quidem.
+				<article>
+					{MemberData.map((member, idx) => {
+						return (
+							<span key={member + idx}>
+								<em></em>
+								<h3>{member.position}</h3>
+								<span>
+									{member.name} : Lorem ipsum dolor sit amet consectetur
+									adipisicing elit. Ratione sunt fugit quidem.
+								</span>
 							</span>
-						</span>
-					);
+						);
+					})}
+				</article>
+			</div>
+			<div className='splitName'>
+				{MemberName.map((name) => {
+					return <p>{name}</p>;
 				})}
 			</div>
 		</Layout>
