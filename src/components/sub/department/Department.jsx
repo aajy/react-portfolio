@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Layout from '../../common/layout/Layout';
 import './Department.scss';
+import { useSplitText } from '../../../hooks/useSplitText';
 
 export default function Department() {
 	const [MemberTit, setMemberTit] = useState('');
 	const [MemberData, setMemberData] = useState([]);
 	const [MemberName, setMemberName] = useState([]);
+	const splitText = useSplitText();
+	const splitRef = useRef(null);
 
 	const path = process.env.PUBLIC_URL; //public 폴더까지의 경로를구하는 구문
 	const fetchDepartmemt = () => {
@@ -19,6 +22,9 @@ export default function Department() {
 	};
 	useEffect(() => {
 		fetchDepartmemt();
+		MemberName.forEach((name, idx) => {
+			splitText(splitRef.current, name);
+		});
 	}, []);
 
 	return (
@@ -53,9 +59,11 @@ export default function Department() {
 				</article>
 			</div>
 			<div className='splitName'>
-				{MemberName.map((name) => {
-					return <p>{name}</p>;
-				})}
+				{MemberName.map((name, idx) => (
+					<p key={idx} ref={splitRef}>
+						{name}
+					</p>
+				))}
 			</div>
 		</Layout>
 	);
