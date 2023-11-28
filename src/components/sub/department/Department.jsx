@@ -1,23 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import Layout from '../../common/layout/Layout';
 import './Department.scss';
-import { useSplitText } from '../../../hooks/useSplitText';
+import { useCustomText } from '../../../hooks/useText';
 
 export default function Department() {
 	const [MemberTit, setMemberTit] = useState('');
 	const [MemberData, setMemberData] = useState([]);
 	const [MemberName, setMemberName] = useState([]);
-	const splitText = useSplitText();
-	const splitRef0 = useRef(null);
-	const splitRef1 = useRef(null);
-	const splitRef2 = useRef(null);
-	const splitRef3 = useRef(null);
-	const splitRef4 = useRef(null);
-	const splitRef5 = useRef(null);
+	// const splitText = useSplitText();
+	// const splitRefs = MemberName.map(useRef());
 
-	const path = process.env.PUBLIC_URL; //public 폴더까지의 경로를구하는 구문
+	const path = useRef(process.env.PUBLIC_URL); //public 폴더까지의 경로를구하는 구문
+	const changeTitle = useCustomText('title');
 	const fetchDepartmemt = () => {
-		fetch(`${path}/DB/department.json`)
+		fetch(`${path.current}/DB/department.json`)
 			.then((data) => data.json())
 			.then((json) => {
 				setMemberTit(Object.keys(json)[0]); //객체를 반복돌며 key값만 배열로 반환
@@ -27,20 +23,28 @@ export default function Department() {
 	};
 	useEffect(() => {
 		fetchDepartmemt();
-		MemberName.forEach((name, idx) => {
-			console.log(`splitRef${idx}`);
-			splitText(`splitRef${idx}`.current, name);
-		});
+		// setTimeout(() => {
+		// 	MemberName.forEach((name, idx) => {
+		// 		const ref = splitRefs[idx].current;
+		// 		if (ref) {
+		// 			splitText(ref, name);
+		// 		}
+		// 		// splitText(splitRefs[idx].current, name);
+		// 	});
+		// }, 300);
 	}, []);
 
 	return (
 		<Layout title={'Department'}>
-			<h2>{`${MemberTit.charAt(0).toUpperCase() + MemberTit.slice(1)}`}</h2>
+			<h2>{changeTitle(MemberTit)}</h2>
 			{MemberData.map((member, idx) => {
 				return (
 					<article key={member + idx}>
 						<div className='pic'>
-							<img src={`${path}/img/${member.pic}`} alt={member.name} />
+							<img
+								src={`${path.current}/img/${member.pic}`}
+								alt={member.name}
+							/>
 							<h2>{member.name}</h2>
 							<p>{member.position}</p>
 						</div>
@@ -64,13 +68,13 @@ export default function Department() {
 					})}
 				</article>
 			</div>
-			<div className='splitName'>
+			{/* <div className='splitName'>
 				{MemberName.map((name, idx) => (
-					<p key={idx} ref={`splitRef${idx}`}>
+					<p key={idx} ref={splitRefs[idx]}>
 						{name}
 					</p>
 				))}
-			</div>
+			</div> */}
 		</Layout>
 	);
 }
