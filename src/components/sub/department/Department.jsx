@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Layout from '../../common/layout/Layout';
 import './Department.scss';
-import { useCustomText } from '../../../hooks/useText';
+import { useCombinedText, useCustomText } from '../../../hooks/useText';
 
 export default function Department() {
 	const [MemberTit, setMemberTit] = useState('');
@@ -13,6 +13,9 @@ export default function Department() {
 	const path = useRef(process.env.PUBLIC_URL); //public 폴더까지의 경로를구하는 구문
 	const changeTitle = useCustomText('title');
 	const shortenText = useCustomText('shorten');
+	const combinedTitle = useCustomText('combined');
+	const test1 = 'our-members-score';
+	console.log(combinedTitle(test1));
 	const fetchDepartmemt = () => {
 		fetch(`${path.current}/DB/department.json`)
 			.then((data) => data.json())
@@ -37,7 +40,7 @@ export default function Department() {
 
 	return (
 		<Layout title={'Department'}>
-			<h2>{changeTitle(MemberTit)}</h2>
+			<h2>{combinedTitle(MemberTit)}</h2>
 			{MemberData.map((member, idx) => {
 				return (
 					<article key={member + idx}>

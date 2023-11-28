@@ -17,6 +17,9 @@ export function useSplitText() {
 	};
 }
 export function useCustomText(type) {
+	const toUpperText = (txt) => {
+		return txt.charAt(0).toUpperCase() + txt.slice(1);
+	};
 	if (type === 'title') {
 		return (txt) => {
 			return txt.charAt(0).toUpperCase() + txt.slice(1);
@@ -29,6 +32,16 @@ export function useCustomText(type) {
 			} else {
 				return txt;
 			}
+		};
+	}
+	if (type === 'combined') {
+		return (txt, spc) => {
+			let resultText = txt
+				.split(/-|_|\+/)
+				.map((data) => toUpperText(data))
+				.join(' ');
+			console.log('resultText', resultText);
+			return resultText;
 		};
 	}
 }
