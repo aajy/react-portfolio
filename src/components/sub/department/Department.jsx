@@ -12,6 +12,7 @@ export default function Department() {
 
 	const path = useRef(process.env.PUBLIC_URL); //public 폴더까지의 경로를구하는 구문
 	const changeTitle = useCustomText('title');
+	const shortenText = useCustomText('shorten');
 	const fetchDepartmemt = () => {
 		fetch(`${path.current}/DB/department.json`)
 			.then((data) => data.json())
@@ -46,7 +47,7 @@ export default function Department() {
 								alt={member.name}
 							/>
 							<h2>{member.name}</h2>
-							<p>{member.position}</p>
+							<p>{shortenText(member.position, 3)}</p>
 						</div>
 					</article>
 				);
