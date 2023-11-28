@@ -40,21 +40,25 @@ export default function Department() {
 
 	return (
 		<Layout title={'Department'}>
-			<h2>{combinedTitle(MemberTit)}</h2>
-			{MemberData.map((member, idx) => {
-				return (
-					<article key={member + idx}>
-						<div className='pic'>
-							<img
-								src={`${path.current}/img/${member.pic}`}
-								alt={member.name}
-							/>
-							<h2>{member.name}</h2>
-							<p>{shortenText(member.position, 3)}</p>
-						</div>
-					</article>
-				);
-			})}
+			<section className='memberBox'>
+				<h2>{combinedTitle(MemberTit)}</h2>
+				<div className='con'>
+					{MemberData.map((member, idx) => {
+						return (
+							<article key={member + idx}>
+								<div className='pic'>
+									<img
+										src={`${path.current}/img/${member.pic}`}
+										alt={member.name}
+									/>
+									<h3>{member.name}</h3>
+									<p>{shortenText(member.position, 3)}</p>
+								</div>
+							</article>
+						);
+					})}
+				</div>
+			</section>
 			<div className='benefits'>
 				<h2>{`${MemberTit.charAt(0).toUpperCase() + MemberTit.slice(1)}`}</h2>
 				<article>
