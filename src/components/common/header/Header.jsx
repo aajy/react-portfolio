@@ -1,7 +1,7 @@
 import './Header.scss';
 import { NavLink, Link } from 'react-router-dom';
 
-export default function Header({ setDark, isDark }) {
+export default function Header({ setDark, isDark, setToggle, Toggle }) {
 	return (
 		<header className='Header'>
 			<h1>
@@ -47,7 +47,9 @@ export default function Header({ setDark, isDark }) {
 			>
 				<div className='ball'></div>
 			</div>
-			<button className='menuToggle'>menu</button>
+			<button className='menuToggle' onClick={() => setToggle(!Toggle)}>
+				menu
+			</button>
 		</header>
 	);
 }
