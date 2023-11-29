@@ -10,9 +10,12 @@
 	--titSize1: 2.4rem;
 	--titSize2: 1.6rem;
 	--bodySize: 1rem;
+	--tablet: 999px;
 }
 .dark {
 	--baseColor: #fff;
 	--baseColor-code: 255, 255, 255;
 	--bgColor: #222;
 }
+
+$tablet: 999px;
