@@ -19,6 +19,9 @@
 			font-weight: bold;
 		}
 	}
+	.menuToggle {
+		display: none;
+	}
 	.themeBox {
 		width: 60px;
 		min-width: 60px;
@@ -43,6 +46,19 @@
 			.ball {
 				left: 37px;
 			}
+		}
+	}
+}
+
+.tablet,
+.mobile {
+	.Header {
+		width: 80vw;
+		ul {
+			display: none;
+		}
+		.menuToggle {
+			display: block;
 		}
 	}
 }

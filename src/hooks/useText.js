@@ -12,7 +12,6 @@ export function useSplitText() {
   `;
 			count++;
 		}
-		console.log(tags);
 		ref.innerHTML = tags;
 	};
 }
@@ -40,7 +39,6 @@ export function useCustomText(type) {
 				.split(/-|_|\+/)
 				.map((data) => toUpperText(data))
 				.join(' ');
-			console.log('resultText', resultText);
 			return resultText;
 		};
 	}

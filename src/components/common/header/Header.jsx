@@ -47,6 +47,7 @@ export default function Header({ setDark, isDark }) {
 			>
 				<div className='ball'></div>
 			</div>
+			<button className='menuToggle'>menu</button>
 		</header>
 	);
 }

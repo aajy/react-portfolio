@@ -19,10 +19,6 @@ export default function Department() {
 			.then((json) => {
 				setMemberTit(Object.keys(json)[0]); //객체를 반복돌며 key값만 배열로 반환
 				setMemberData(Object.values(json)[0]); //객체를 반복돌며 value값만 배열로 반환
-				console.log(
-					'nameArr',
-					Object.values(json)[0].map((el) => el.name)
-				);
 			});
 	};
 	const fetchHistory = () => {
