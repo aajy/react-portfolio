@@ -34,11 +34,11 @@ export function useCustomText(type) {
 		};
 	}
 	if (type === 'combined') {
-		return (txt, spc) => {
+		return (txt, spc = ' ') => {
 			let resultText = txt
 				.split(/-|_|\+/)
 				.map((data) => toUpperText(data))
-				.join(' ');
+				.join(spc);
 			return resultText;
 		};
 	}
