@@ -2,6 +2,7 @@ import Layout from '../../common/layout/Layout';
 import './Youtube.scss';
 import { useState, useEffect } from 'react';
 import { useCustomText } from '../../../hooks/useText';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function Youtube() {
 	const customText = useCustomText('combined');
@@ -21,7 +22,6 @@ export default function Youtube() {
 			console.log(err);
 		}
 	};
-	console.log('Vids', Vids);
 	useEffect(() => {
 		fetchYoutube();
 	}, []);
@@ -43,10 +43,12 @@ export default function Youtube() {
 						</div>
 
 						<div className='pic'>
-							<img
-								src={data.snippet.thumbnails.standard.url}
-								alt={data.snippet.title}
-							/>
+							<Link to={`/detail/${data.id}`}>
+								<img
+									src={data.snippet.thumbnails.standard.url}
+									alt={data.snippet.title}
+								/>
+							</Link>
 						</div>
 					</article>
 				);

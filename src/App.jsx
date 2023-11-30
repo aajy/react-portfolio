@@ -14,6 +14,7 @@ import { Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useMedia } from './hooks/useMedia';
 import Menu from './components/common/menu/Menu';
+import Detail from './components/sub/youtube/Detail';
 function App() {
 	const [Dark, setDark] = useState(false);
 	const [Toggle, setToggle] = useState(false);
@@ -28,11 +29,12 @@ function App() {
 			/>
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
-			<Route path='/youtube' component={Youtube} />
 			<Route path='/gallery' component={Gallery} />
 			<Route path='/community' component={Community} />
 			<Route path='/members' component={Members} />
 			<Route path='/contact' component={Contact} />
+			<Route path='/youtube' component={Youtube} />
+			<Route path='/detail/:id' component={Detail} />
 			<Footer />
 			{Toggle && <Menu setToggle={setToggle} />}
 		</div>
