@@ -6,9 +6,6 @@ import { useEffect, useState } from 'react';
 export default function Detail() {
 	const { id } = useParams();
 	const [YoutubeData, setYoutubeData] = useState(null);
-	console.log('re-render');
-	console.log('YoutubeData: ', YoutubeData);
-	console.log('-----------------');
 
 	const fetchSingledata = async () => {
 		const api_key = process.env.REACT_APP_YOUTUBE_API;
@@ -19,7 +16,6 @@ export default function Detail() {
 		setYoutubeData(json.items[0].snippet);
 	};
 	useEffect(() => {
-		console.log('useEffect');
 		fetchSingledata();
 	}, []);
 	return (
