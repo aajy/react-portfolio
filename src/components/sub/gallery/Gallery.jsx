@@ -4,9 +4,14 @@ import Layout from '../../common/layout/Layout';
 import './Gallery.scss';
 
 export default function Gallery() {
-	const [Pics, setPics] = useState([]);
 	const myID = useRef('198783018@N02');
-
+	const [Pics, setPics] = useState([]);
+	const refNav = useRef(null);
+	const activatieBtn = (e) => {
+		const btns = refNav.current.querySelectorAll('button');
+		btns.forEach((btn) => btn.classList.remove('on'));
+		e.target.classList.add('on');
+	};
 	const fetchFlickr = async (opt) => {
 		const num = 50;
 		const flickr_api = process.env.REACT_APP_FLICKR_API;
@@ -32,12 +37,21 @@ export default function Gallery() {
 	return (
 		<Layout title={'Gallery'}>
 			<article className='controls'>
-				<nav className='btnSet'>
-					<button onClick={() => fetchFlickr({ type: 'interest' })}>
+				<nav className='btnSet' ref={refNav}>
+					<button
+						onClick={(e) => {
+							activatieBtn(e);
+							fetchFlickr({ type: 'interest' });
+						}}
+						className={'on'}
+					>
 						Interest
 					</button>
 					<button
-						onClick={() => fetchFlickr({ type: 'user', id: myID.current })}
+						onClick={(e) => {
+							activatieBtn(e);
+							fetchFlickr({ type: 'user', id: myID.current });
+						}}
 					>
 						My Gallery
 					</button>
@@ -59,7 +73,10 @@ export default function Gallery() {
 								</div>
 								<h2>{pic.title}</h2>
 
-								<div className='profile'>
+								<div
+									className='profile'
+									onClick={() => fetchFlickr({ type: 'user', id: pic.owner })}
+								>
 									<img
 										src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
 										alt='사용자 프로필 이미지'
