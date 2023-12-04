@@ -7,10 +7,24 @@ export default function Gallery() {
 	const myID = useRef('198783018@N02');
 	const [Pics, setPics] = useState([]);
 	const refNav = useRef(null);
-	const activatieBtn = (e) => {
+	const activateBtn = (e) => {
 		const btns = refNav.current.querySelectorAll('button');
 		btns.forEach((btn) => btn.classList.remove('on'));
-		e.target.classList.add('on');
+		e && e.target.classList.add('on');
+	};
+	const handleInterest = (e) => {
+		if (e.target.classList.contains('on')) return;
+		activateBtn(e);
+		fetchFlickr({ type: 'interest' });
+	};
+	const handleMine = (e) => {
+		if (e.target.classList.contains('on')) return;
+		activateBtn(e);
+		fetchFlickr({ type: 'user', id: myID.current });
+	};
+	const handleUser = (e) => {
+		activateBtn();
+		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
 	const fetchFlickr = async (opt) => {
 		const num = 50;
@@ -38,21 +52,8 @@ export default function Gallery() {
 		<Layout title={'Gallery'}>
 			<article className='controls'>
 				<nav className='btnSet' ref={refNav}>
-					<button
-						onClick={(e) => {
-							activatieBtn(e);
-							fetchFlickr({ type: 'interest' });
-						}}
-						className={'on'}
-					>
-						Interest
-					</button>
-					<button
-						onClick={(e) => {
-							activatieBtn(e);
-							fetchFlickr({ type: 'user', id: myID.current });
-						}}
-					>
+					<button onClick={handleInterest}>Interest</button>
+					<button onClick={handleMine} className='on'>
 						My Gallery
 					</button>
 				</nav>
@@ -73,10 +74,7 @@ export default function Gallery() {
 								</div>
 								<h2>{pic.title}</h2>
 
-								<div
-									className='profile'
-									onClick={() => fetchFlickr({ type: 'user', id: pic.owner })}
-								>
+								<div className='profile' onClick={handleUser}>
 									<img
 										src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
 										alt='사용자 프로필 이미지'
