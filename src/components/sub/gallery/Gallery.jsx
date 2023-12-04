@@ -6,6 +6,7 @@ import './Gallery.scss';
 export default function Gallery() {
 	const myID = useRef('198783018@N02');
 	const [Pics, setPics] = useState([]);
+	const isUser = useRef(myID.current);
 	const refNav = useRef(null);
 	const activateBtn = (e) => {
 		const btns = refNav.current.querySelectorAll('button');
@@ -14,15 +15,25 @@ export default function Gallery() {
 	};
 	const handleInterest = (e) => {
 		if (e.target.classList.contains('on')) return;
+		isUser.current = '';
 		activateBtn(e);
 		fetchFlickr({ type: 'interest' });
 	};
 	const handleMine = (e) => {
-		if (e.target.classList.contains('on')) return;
+		console.log('M isUser', isUser.current);
+		console.log('M myID', myID.current);
+		if (e.target.classList.contains('on') || isUser.current === myID.current)
+			return;
+		isUser.current = myID.current;
 		activateBtn(e);
 		fetchFlickr({ type: 'user', id: myID.current });
 	};
 	const handleUser = (e) => {
+		console.log('U isUser', isUser.current);
+		console.log('U myID', myID.current);
+		//isUser값이 비어있기만 하면 중지
+		if (isUser.current) return;
+		isUser.current = e.target.innerText;
 		activateBtn();
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
@@ -74,7 +85,7 @@ export default function Gallery() {
 								</div>
 								<h2>{pic.title}</h2>
 
-								<div className='profile' onClick={handleUser}>
+								<div className='profile'>
 									<img
 										src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
 										alt='사용자 프로필 이미지'
@@ -85,7 +96,7 @@ export default function Gallery() {
 											)
 										}
 									/>
-									<span>{pic.owner}</span>
+									<span onClick={handleUser}>{pic.owner}</span>
 								</div>
 							</article>
 						);
