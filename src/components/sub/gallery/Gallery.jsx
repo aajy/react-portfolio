@@ -29,7 +29,7 @@ export default function Gallery() {
 		fetchFlickr({ type: 'user', id: myID.current });
 	};
 	const handleUser = (e) => {
-		console.log('U isUser', isUser.current);
+		console.log('U isUser', e.target.innerText);
 		console.log('U myID', myID.current);
 		//isUser값이 비어있기만 하면 중지
 		if (isUser.current) return;
@@ -43,12 +43,15 @@ export default function Gallery() {
 		const baseURL = `https://www.flickr.com/services/rest/?&api_key=${flickr_api}&per_page=${num}&format=json&nojsoncallback=1&method=`;
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
+		const method_search = 'flickr.photos.search';
 		const interestURL = `${baseURL}${method_interest}`;
 		const userURL = `${baseURL}${method_user}&user_id=${opt.id}`;
+		const searchURL = `${baseURL}${method_search}&tags=${opt.keyword}`;
 
 		let url = '';
 		opt.type === 'user' && (url = userURL);
 		opt.type === 'interest' && (url = interestURL);
+		opt.type === 'search' && (url = searchURL);
 
 		const data = await fetch(url);
 		const json = await data.json();
@@ -56,7 +59,8 @@ export default function Gallery() {
 	};
 
 	useEffect(() => {
-		fetchFlickr({ type: 'user', id: myID.current });
+		// fetchFlickr({ type: 'user', id: myID.current });
+		fetchFlickr({ type: 'search', keyword: 'landscape' });
 	}, []);
 
 	return (
