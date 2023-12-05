@@ -34,6 +34,11 @@ export default function Gallery() {
 		activateBtn();
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
+	const handleSearch = (e) => {
+		e.preventDefault();
+		const keyword = e.target.children[0].value;
+		console.log(keyword);
+	};
 	const fetchFlickr = async (opt) => {
 		const num = 50;
 
@@ -68,9 +73,11 @@ export default function Gallery() {
 						My Gallery
 					</button>
 				</nav>
-				<form>
+				<form onSubmit={handleSearch}>
 					<input type='text' placeholder='Search' />
-					<LuSearch className='btnSearch' />
+					<button className='btnSearch'>
+						<LuSearch />
+					</button>
 				</form>
 			</article>
 
