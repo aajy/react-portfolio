@@ -3,7 +3,12 @@
 	--num: 4;
 
 	.controls {
-		margin-bottom: 20px;
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: flex-end;
+		padding: 20px 5px;
 		.btnSet {
 			display: flex;
 			gap: 20px;
@@ -35,6 +40,18 @@
 						width: 100%;
 					}
 				}
+			}
+		}
+		form {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			input {
+				width: 120px;
+				border: none;
+				background-color: transparent;
+				border-bottom: 1px solid rgba(var(--baseColor-code), 0.5);
+				outline: 0;
 			}
 		}
 	}
