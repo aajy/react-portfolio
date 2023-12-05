@@ -3,12 +3,15 @@ import Masonry from 'react-masonry-component';
 import Layout from '../../common/layout/Layout';
 import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
+import Modal from '../../common/modal/Modal';
 
 export default function Gallery() {
 	const myID = useRef('198783018@N02');
 	const isUser = useRef(myID.current);
 	const refNav = useRef(null);
 	const [Pics, setPics] = useState([]);
+	const [Open, setOpen] = useState(false);
+	const [Index, setIndex] = useState(0);
 
 	const activateBtn = (e) => {
 		const btns = refNav.current.querySelectorAll('button');
@@ -64,65 +67,86 @@ export default function Gallery() {
 		setPics(json.photos.photo);
 	};
 
+	const openModal = (e) => {
+		setOpen(true);
+	};
+
 	useEffect(() => {
 		fetchFlickr({ type: 'user', id: myID.current });
 	}, []);
 
 	return (
-		<Layout title={'Gallery'}>
-			<article className='controls'>
-				<nav className='btnSet' ref={refNav}>
-					<button onClick={handleInterest}>Interest Gallery</button>
-					<button className='on' onClick={handleMine}>
-						My Gallery
-					</button>
-				</nav>
-				<form onSubmit={handleSearch}>
-					<input type='text' placeholder='Search' />
-					<button className='btnSearch'>
-						<LuSearch />
-					</button>
-				</form>
-			</article>
+		<>
+			<Layout title={'Gallery'}>
+				<article className='controls'>
+					<nav className='btnSet' ref={refNav}>
+						<button onClick={handleInterest}>Interest Gallery</button>
+						<button className='on' onClick={handleMine}>
+							My Gallery
+						</button>
+					</nav>
+					<form onSubmit={handleSearch}>
+						<input type='text' placeholder='Search' />
+						<button className='btnSearch'>
+							<LuSearch />
+						</button>
+					</form>
+				</article>
 
-			<section>
-				<Masonry
-					className={'frame'}
-					options={{ transitionDuration: '0.5s', gutter: 20 }}
-				>
-					{Pics.length === 0 ? (
-						<h2>해당 키워드 검색결과가 없습니다.</h2>
-					) : (
-						Pics.map((pic) => {
-							return (
-								<article key={pic.id}>
-									<div className='pic'>
-										<img
-											src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`}
-											alt={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`}
-										/>
-									</div>
-									<h2>{pic.title}</h2>
+				<section>
+					<Masonry
+						className={'frame'}
+						options={{ transitionDuration: '0.5s', gutter: 20 }}
+					>
+						{Pics.length === 0 ? (
+							<h2>해당 키워드 검색결과가 없습니다.</h2>
+						) : (
+							Pics.map((pic, idx) => {
+								return (
+									<article key={pic.id}>
+										<div
+											className='pic'
+											onClick={() => {
+												setOpen(true);
+												setIndex(idx);
+											}}
+										>
+											<img
+												src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`}
+												alt={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`}
+											/>
+										</div>
+										<h2>{pic.title}</h2>
 
-									<div className='profile'>
-										<img
-											src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
-											alt='사용자 프로필 이미지'
-											onError={(e) =>
-												e.target.setAttribute(
-													'src',
-													'https://www.flickr.com/images/buddyicon.gif'
-												)
-											}
-										/>
-										<span onClick={handleUser}>{pic.owner}</span>
-									</div>
-								</article>
-							);
-						})
-					)}
-				</Masonry>
-			</section>
-		</Layout>
+										<div className='profile'>
+											<img
+												src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
+												alt='사용자 프로필 이미지'
+												onError={(e) =>
+													e.target.setAttribute(
+														'src',
+														'https://www.flickr.com/images/buddyicon.gif'
+													)
+												}
+											/>
+											<span onClick={handleUser}>{pic.owner}</span>
+										</div>
+									</article>
+								);
+							})
+						)}
+					</Masonry>
+				</section>
+			</Layout>
+
+			<Modal Open={Open} setOpen={setOpen}>
+				{Pics[Index] && (
+					<img
+						src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`}
+						alt={'img'}
+					/>
+				)}
+			</Modal>
+		</>
 	);
 }
