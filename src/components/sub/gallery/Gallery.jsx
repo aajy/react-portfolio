@@ -9,6 +9,8 @@ export default function Gallery() {
 	const myID = useRef('198783018@N02');
 	const isUser = useRef(myID.current);
 	const refNav = useRef(null);
+	const refFrameWrap = useRef(null);
+	const gap = useRef(20);
 	const [Pics, setPics] = useState([]);
 	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
@@ -72,6 +74,7 @@ export default function Gallery() {
 	};
 
 	useEffect(() => {
+		refFrameWrap.current.style.setProperty('--gap', gap.current + 'px');
 		fetchFlickr({ type: 'user', id: myID.current });
 	}, []);
 
@@ -93,10 +96,10 @@ export default function Gallery() {
 					</form>
 				</article>
 
-				<section>
+				<section className='frameWrap' ref={refFrameWrap}>
 					<Masonry
 						className={'frame'}
-						options={{ transitionDuration: '0.5s', gutter: 20 }}
+						options={{ transitionDuration: '0.5s', gutter: gap.current }}
 					>
 						{Pics.length === 0 ? (
 							<h2>해당 키워드 검색결과가 없습니다.</h2>
