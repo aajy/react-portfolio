@@ -17,6 +17,7 @@ export default function Community() {
 	const refCon = useRef(null);
 	const refEditTit = useRef(null);
 	const refEditCon = useRef(null);
+	const editMode = useRef(false);
 
 	//input 초기화 함수
 	const resetPost = () => {
@@ -71,6 +72,8 @@ export default function Community() {
 
 	//수정모드 변경함수
 	const enableUpdate = (editIndex) => {
+		if (editMode.current) return;
+		editMode.current = true;
 		//기존의 Post배열을 반복돌면서 파라미터로 전달된 editIndex순번의 포스트에만 enableUpdate=true라는 구분자를 추가해서 다시 state변경처리
 		//다음번 렌더링때 해당 구분자가 있는 포스트객체만 수정모드로 분기처리하기 위함
 		setPost(
@@ -83,6 +86,7 @@ export default function Community() {
 
 	//출력모드 변경함수
 	const disableUpdate = (editIndex) => {
+		editMode.current = false;
 		setPost(
 			Post.map((el, idx) => {
 				if (editIndex === idx) el.enableUpdate = false;
@@ -99,6 +103,8 @@ export default function Community() {
 	};
 
 	useEffect(() => {
+		//Post데이터가 변경되면 수정모드를 강제로 false처리하면서 로컬저장소에 저장하고 컴포넌트 재실행
+		Post.map((el) => (el.enableUpdate = false));
 		localStorage.setItem('post', JSON.stringify(Post));
 	}, [Post]);
 
@@ -127,7 +133,8 @@ export default function Community() {
 				<div className='showBox'>
 					{Post.map((el, idx) => {
 						const date = JSON.stringify(el.date);
-						const strDate = changeText(date.split('T')[0].slice(1), '.');
+						const strDate =
+							date && changeText(date.split('T')[0].slice(1), '.');
 
 						if (el.enableUpdate) {
 							//수정모드

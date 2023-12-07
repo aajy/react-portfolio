@@ -40,7 +40,6 @@
 		.showBox {
 			--boxGap: 20px;
 			--num: 3;
-
 			width: 70%;
 			padding-left: 50px;
 			border-left: 1px solid rgba(var(--baseColor-code), 0.5);
@@ -78,12 +77,13 @@
 						opacity: 0.6;
 						margin-bottom: 40px;
 					}
+					//수정모드 일때 폼요소 스타일링
 					input,
 					textarea {
 						border: none;
 						width: 100%;
-						font-size: 1;
-						padding: 30px 10px;
+						font-size: 1rem;
+						padding: 3px 10px;
 						margin-bottom: 20px;
 						resize: none;
 					}
