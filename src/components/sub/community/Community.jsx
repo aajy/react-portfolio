@@ -139,7 +139,7 @@ export default function Community() {
 					})}
 			</nav>
 
-			<div className='wrap'>
+			<div className='communityWrap'>
 				<div className='inputBox'>
 					<input type='text' placeholder='title' ref={refTit} />
 					<textarea

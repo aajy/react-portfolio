@@ -24,10 +24,10 @@ a {
 	font-family: var(--baseFont);
 	background-color: var(--bgColor);
 	transition: color 1s, background-color 1s;
-	* {
-		height: auto;
-		overflow: hidden;
-	}
+	// * {
+	// 	height: auto;
+	// 	overflow: hidden;
+	// }
 	&::-webkit-scrollbar {
 		width: 8px;
 		background-color: transparent;
