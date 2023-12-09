@@ -3,24 +3,50 @@ import Layout from '../../common/layout/Layout';
 import './Contact.scss';
 
 export default function Contact() {
-	const mapFrame = useRef(null);
 	const { kakao } = window;
-	console.log(kakao);
-
-	const mapOption = useRef({
-		center: new kakao.maps.LatLng(33.450701, 126.570667),
-		level: 3,
-	});
+	const mapFrame = useRef(null);
+	const mapInfo = useRef([
+			{
+				title: '삼성역 코엑스',
+				latlng: new kakao.maps.LatLng(37.51100661425726, 127.06162026853143),
+				imgSrc: `${process.env.PUBLIC_URL}/img/marker1.png`,
+				imgSize: new kakao.maps.Size(232, 99),
+				imgPos: { offset: new kakao.maps.Point(116, 99) },
+			},
+			{
+				title: '넥슨 본사',
+				latlng: new kakao.maps.LatLng(37.40211707077346, 127.10344953763003),
+				imgSrc: `${process.env.PUBLIC_URL}/img/marker2.png`,
+				imgSize: new kakao.maps.Size(232, 99),
+				imgPos: { offset: new kakao.maps.Point(116, 99) },
+			},
+			{
+				title: '서울 시청',
+				latlng: new kakao.maps.LatLng(37.5662952, 126.9779451),
+				imgSrc: `${process.env.PUBLIC_URL}/img/marker3.png`,
+				imgSize: new kakao.maps.Size(232, 99),
+				imgPos: { offset: new kakao.maps.Point(116, 99) },
+			},
+		]);
+	]);
 
 	useEffect(() => {
-		const mapInstance = new kakao.maps.Map(mapFrame.current, mapOption.current);
-		const posInstance = new kakao.maps.LatLng(33.450701, 126.570667);
+		const mapInstance = new kakao.maps.Map(
+			mapFrame.current,
+			mapInfo.current[0].latlng
+		);
+
 		const markerInstance = new kakao.maps.Marker({
-			position: posInstance,
+			position: mapInfo.current[0].latlng,
+			image: new kakao.maps.MarkerImage(
+				mapInfo.current[0].imgSrc,
+				mapInfo.current[0].imgSize,
+				mapInfo.current[0].imgOpt
+			),
 		});
 
 		markerInstance.setMap(mapInstance);
-	}, [kakao]);
+	}, []);
 
 	return (
 		<Layout title={'Contact'}>
