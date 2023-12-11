@@ -11,6 +11,7 @@ export default function Contact() {
 	const mapFrame = useRef(null);
 	const marker = useRef(null);
 	const mapInstance = useRef(null);
+	const viewFrame = useRef(null);
 
 	//지점마다 출력할 정보를 개별적인 객체로 묶어서 배열로 그룹화
 	const mapInfo = useRef([
@@ -64,10 +65,19 @@ export default function Contact() {
 		});
 		marker.current.setMap(mapInstance.current);
 		setTraffic(false);
+		mapInstance.current.addControl(
+			new kakao.current.maps.MapTypeControl(),
+			kakao.current.maps.ControlPosition.TOPRIGHT
+		);
+		mapInstance.current.addControl(
+			new kakao.current.maps.ZoomControl(),
+			kakao.current.maps.ControlPosition.RIGHT
+		);
 
 		window.addEventListener('resize', setCenter);
 		return () => window.removeEventListener('resize', setCenter);
 	}, [Index]);
+
 	useEffect(() => {
 		Traffic
 			? mapInstance.current.addOverlayMapTypeId(
@@ -102,6 +112,7 @@ export default function Contact() {
 				</nav>
 			</div>
 			<article className='mapBox' ref={mapFrame}></article>
+			<article className='viewBox' ref={viewFrame}></article>
 		</Layout>
 	);
 }
