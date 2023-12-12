@@ -6,9 +6,6 @@ import emailjs from '@emailjs/browser';
 export default function Contact() {
 	const form = useRef();
 
-	const [user, email] = form.current.querySelectorAll('iput');
-	const txtArea = form.current.querySelector('textarea');
-
 	const resetForm = () => {
 		const elArr = form.current.children;
 
@@ -20,6 +17,9 @@ export default function Contact() {
 
 	const sendEmail = e => {
 		e.preventDefault();
+		const [user, email] = form.current.querySelectorAll('input');
+		const txtArea = form.current.querySelector('textarea');
+		if (!user.value || !email.value || !txtArea.value) return alert('이름, 답장받을 이메일주소 문의내용을 모두 입력하세요.');
 
 		emailjs.sendForm('service_l5guurg', 'template_ay7vtre', form.current, 'LQD0o9TZqyvfdGflj').then(
 			result => {
