@@ -9,8 +9,6 @@ export default function Contact() {
 	const [user, email] = form.current.querySelectorAll('iput');
 	const txtArea = form.current.querySelector('textarea');
 
-	if (!user.value || !email.value || !txtArea.value) return alert('이름, 답장받을 이메일주소 문의내용을 모두 입력하세요.');
-
 	const resetForm = () => {
 		const elArr = form.current.children;
 
