@@ -1,13 +1,20 @@
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useDebounce } from '../../../hooks/useDebounce';
 import Layout from '../../common/layout/Layout';
 import './Members.scss';
 import { useRef, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 export default function Members() {
 	const history = useHistory();
-	const initVal = useRef({ userid: '', pwd1: '', pwd2: '', email: '', comments: '', pwd1: '', pwd2: '', edu: '', gender: '', interest: [] });
+	const initVal = useRef({ userid: '', pwd1: '', pwd2: '', email: '', comments: '', edu: '', gender: '', interest: [] });
 	const [Val, setVal] = useState(initVal.current);
+	//useDebouce 훅의 인수로 특정 state를 전달해서 debouncing이 적용된 새로운 state값 반환받음
+	const DebouncedVal = useDebounce(Val);
 	const [Errs, setErrs] = useState({});
+
+	const handleReset = () => {
+		setVal(initVal.current);
+	};
 
 	const handleChange = e => {
 		const { name, value } = e.target;
@@ -23,6 +30,7 @@ export default function Members() {
 	};
 
 	const check = value => {
+		console.log('check');
 		const errs = {};
 		const num = /[0-9]/;
 		const txt = /[a-zA-Z]/;
@@ -35,32 +43,28 @@ export default function Members() {
 		if (!value.gender) errs.gender = '성별을 선택하세요';
 		if (value.interest.length === 0) errs.interest = '관심사를 하나이상 선택하세요.';
 		if (!value.edu) errs.edu = '최종학력을 선택하세요.';
+		if (value.pwd1 !== value.pwd2 || !value.pwd2) errs.pwd2 = '두개의 비밀번호를 같게 입력하세요.';
+		if (!m1 || !m2 || !m3[0] || !m3[1]) errs.email = '올바른 이메일 형식으로 입력하세요';
 		if (!num.test(value.pwd1) || !txt.test(value.pwd1) || !spc.test(value.pwd1) || value.pwd1.length < 5)
 			errs.pwd1 = '비밀번호는 특수문자, 문자, 숫자를 모두포함해서 5글자 이상 입력하세요.';
-		if (value.pwd1 !== value.pwd2 || !value.pwd2) errs.pwd2 = '두개의 비밀번호를 같게 입력하세요.';
-		if (!m1 || !m2 || !m3[0] || !m3[1]) errs.email = '올바른 이메일 형식으로 입력하세요.';
 
 		return errs;
 	};
-	const handleReset = e => {
-		e.preventDefault();
-		setVal(initVal.current);
-	};
+
 	const handleSubmit = e => {
 		e.preventDefault();
 
 		if (Object.keys(check(Val)).length === 0) {
-			alert('회원가입을 축하드립니다.');
-			history.push('/');
-		} else {
-			console.log('err');
+			alert('회원가입을 축하합니다.');
+			history.push('/welcome/3');
 		}
 	};
 
+	//debounding이 적용된 state를 의존성배열에 등록해서
+	//해당 값으로 check함수 호출
 	useEffect(() => {
-		setErrs(check(Val));
-		console.log(Errs);
-	}, [Val]);
+		setErrs(check(DebouncedVal));
+	}, [DebouncedVal]);
 
 	return (
 		<Layout title={'Members'}>
