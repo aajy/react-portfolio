@@ -11,22 +11,30 @@ import './globalStyles/Variables.scss';
 import './globalStyles/Reset.scss';
 
 import { Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useMedia } from './hooks/useMedia';
 import Menu from './components/common/menu/Menu';
 import Detail from './components/sub/youtube/Detail';
 function App() {
+	const dispatch = useDispatch();
 	const [Dark, setDark] = useState(false);
 	const [Toggle, setToggle] = useState(false);
-
+	const path = useRef(process.env.PUBLIC_URL);
+	const fetchDepartmemt = () => {
+		fetch(`${path.current}/DB/department.json`)
+			.then(data => data.json())
+			.then(json => {
+				console.log(json.members);
+				dispatch({ type: 'SET_MEMBERS', payload: json.members });
+			});
+	};
+	useEffect(() => {
+		fetchDepartmemt();
+	}, []);
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header
-				isDark={Dark}
-				setDark={() => setDark(!Dark)}
-				Toggle={Toggle}
-				setToggle={setToggle}
-			/>
+			<Header isDark={Dark} setDark={() => setDark(!Dark)} Toggle={Toggle} setToggle={setToggle} />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
