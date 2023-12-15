@@ -9,6 +9,7 @@ import Members from './components/sub/members/Members';
 import Youtube from './components/sub/youtube/Youtube';
 import './globalStyles/Variables.scss';
 import './globalStyles/Reset.scss';
+import * as types from './redux/action';
 
 import { Route } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -21,22 +22,38 @@ function App() {
 	const [Dark, setDark] = useState(false);
 	const [Toggle, setToggle] = useState(false);
 	const path = useRef(process.env.PUBLIC_URL);
-	const fetchDepartmemt = useCallback(async () => {
+	const fetchDepartment = useCallback(async () => {
 		const data = await fetch(`${path.current}/DB/department.json`);
 		const json = await data.json();
-		dispatch({ type: 'SET_MEMBERS', payload: json.members });
+		dispatch({ type: types.MEMBER.success, payload: json.members });
 	}, [dispatch]);
 
 	const fetchHistory = useCallback(async () => {
 		const data = await fetch(`${path.current}/DB/history.json`);
 		const json = await data.json();
-		dispatch({ type: 'SET_MEMBERS_HISTORY', payload: json.history });
+		dispatch({ type: types.HISTORY.success, payload: json.history });
+	}, [dispatch]);
+
+	const fetchYoutube = useCallback(async () => {
+		const api_key = process.env.REACT_APP_YOUTUBE_API;
+		const pid = process.env.REACT_APP_YOUTUBE_LIST;
+		const num = 10;
+		const baseURL = `https://www.googleapis.com/youtube/v3/playlistItems?key=${api_key}&part=snippet&playlistId=${pid}&maxResults=${num}`;
+
+		try {
+			const data = await fetch(baseURL);
+			const json = await data.json();
+			dispatch({ type: types.YOUTUBE.success, payload: json.items });
+		} catch (err) {
+			dispatch({ type: types.YOUTUBE.fail, payload: err });
+		}
 	}, [dispatch]);
 
 	useEffect(() => {
-		fetchDepartmemt();
+		fetchDepartment();
 		fetchHistory();
-	}, [fetchDepartmemt, fetchHistory]);
+		fetchYoutube();
+	}, [fetchDepartment, fetchHistory, fetchYoutube]);
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
 			<Header isDark={Dark} setDark={() => setDark(!Dark)} Toggle={Toggle} setToggle={setToggle} />
