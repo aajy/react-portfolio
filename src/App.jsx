@@ -11,7 +11,7 @@ import './globalStyles/Variables.scss';
 import './globalStyles/Reset.scss';
 
 import { Route } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMedia } from './hooks/useMedia';
 import Menu from './components/common/menu/Menu';
@@ -21,17 +21,22 @@ function App() {
 	const [Dark, setDark] = useState(false);
 	const [Toggle, setToggle] = useState(false);
 	const path = useRef(process.env.PUBLIC_URL);
-	const fetchDepartmemt = () => {
-		fetch(`${path.current}/DB/department.json`)
-			.then(data => data.json())
-			.then(json => {
-				console.log(json.members);
-				dispatch({ type: 'SET_MEMBERS', payload: json.members });
-			});
-	};
+	const fetchDepartmemt = useCallback(async () => {
+		const data = await fetch(`${path.current}/DB/department.json`);
+		const json = await data.json();
+		dispatch({ type: 'SET_MEMBERS', payload: json.members });
+	}, [dispatch]);
+
+	const fetchHistory = useCallback(async () => {
+		const data = await fetch(`${path.current}/DB/history.json`);
+		const json = await data.json();
+		dispatch({ type: 'SET_MEMBERS_HISTORY', payload: json.history });
+	}, [dispatch]);
+
 	useEffect(() => {
 		fetchDepartmemt();
-	}, []);
+		fetchHistory();
+	}, [fetchDepartmemt, fetchHistory]);
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
 			<Header isDark={Dark} setDark={() => setDark(!Dark)} Toggle={Toggle} setToggle={setToggle} />

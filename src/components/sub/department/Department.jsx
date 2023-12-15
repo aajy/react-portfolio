@@ -6,23 +6,14 @@ import { useSelector } from 'react-redux';
 
 export default function Department() {
 	const MemberData = useSelector(store => store.memberReducer.members);
+	const HistoryData = Object.values(useSelector(store => store.memberHistoryReducer.history));
+	const HistoryTit = Object.keys(useSelector(store => store.memberHistoryReducer))[0];
+
 	const combinedTitle = useCustomText('combined');
-	const [HistoryTit, setHistoryTit] = useState('');
-	const [HistoryData, setHistoryData] = useState([]);
+	// const [HistoryTit, setHistoryTit] = useState('');
+	// const [HistoryData, setHistoryData] = useState([]);
 	const path = useRef(process.env.PUBLIC_URL); //public 폴더까지의 경로를구하는 구문
 	const shortenText = useCustomText('shorten');
-
-	const fetchHistory = () => {
-		fetch(`${path.current}/DB/history.json`)
-			.then(data => data.json())
-			.then(json => {
-				setHistoryTit(Object.keys(json)[0]);
-				setHistoryData(Object.values(json)[0]);
-			});
-	};
-	useEffect(() => {
-		fetchHistory();
-	}, []);
 
 	return (
 		<Layout title={'Department'}>

@@ -8,6 +8,14 @@ const memberReducer = (state = [], action) => {
 			return state;
 	}
 };
+const memberHistoryReducer = (state = [], action) => {
+	switch (action.type) {
+		case 'SET_MEMBERS_HISTORY':
+			return { ...state, history: action.payload };
+		default:
+			return state;
+	}
+};
 
-const reducers = combineReducers({ memberReducer });
+const reducers = combineReducers({ memberReducer, memberHistoryReducer });
 export default reducers;
