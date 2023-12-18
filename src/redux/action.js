@@ -13,3 +13,6 @@ export const YOUTUBE = {
 	success: 'YOUTUBE_SUCCESS',
 	fail: 'YOUTUBE_FAIL'
 };
+export const MODAL = {
+	start: 'MODAL_START'
+};

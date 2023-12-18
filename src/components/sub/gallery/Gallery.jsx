@@ -4,42 +4,43 @@ import Layout from '../../common/layout/Layout';
 import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
 import Modal from '../../common/modal/Modal';
+import { useDispatch } from 'react-redux';
+import * as types from '../../../redux/action';
 
 export default function Gallery() {
+	const dispatch = useDispatch();
 	const myID = useRef('198783018@N02');
 	const isUser = useRef(myID.current);
 	const refNav = useRef(null);
 	const refFrameWrap = useRef(null);
 	const gap = useRef(20);
 	const [Pics, setPics] = useState([]);
-	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
 
-	const activateBtn = (e) => {
+	const activateBtn = e => {
 		const btns = refNav.current.querySelectorAll('button');
-		btns.forEach((btn) => btn.classList.remove('on'));
+		btns.forEach(btn => btn.classList.remove('on'));
 		e && e.target.classList.add('on');
 	};
-	const handleInterest = (e) => {
+	const handleInterest = e => {
 		if (e.target.classList.contains('on')) return;
 		isUser.current = '';
 		activateBtn(e);
 		fetchFlickr({ type: 'interest' });
 	};
-	const handleMine = (e) => {
-		if (e.target.classList.contains('on') || isUser.current === myID.current)
-			return;
+	const handleMine = e => {
+		if (e.target.classList.contains('on') || isUser.current === myID.current) return;
 		isUser.current = myID.current;
 		activateBtn(e);
 		fetchFlickr({ type: 'user', id: myID.current });
 	};
-	const handleUser = (e) => {
+	const handleUser = e => {
 		if (isUser.current) return;
 		isUser.current = e.target.innerText;
 		activateBtn();
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
-	const handleSearch = (e) => {
+	const handleSearch = e => {
 		e.preventDefault();
 		isUser.current = '';
 		activateBtn();
@@ -48,7 +49,7 @@ export default function Gallery() {
 		e.target.children[0].value = ''; //검색 후 input에 입력한 값 삭제
 		fetchFlickr({ type: 'search', keyword: keyword });
 	};
-	const fetchFlickr = async (opt) => {
+	const fetchFlickr = async opt => {
 		const num = 50;
 
 		const flickr_api = process.env.REACT_APP_FLICKR_API;
@@ -67,10 +68,6 @@ export default function Gallery() {
 		const json = await data.json();
 
 		setPics(json.photos.photo);
-	};
-
-	const openModal = (e) => {
-		setOpen(true);
 	};
 
 	useEffect(() => {
@@ -97,10 +94,7 @@ export default function Gallery() {
 				</article>
 
 				<section className='frameWrap' ref={refFrameWrap}>
-					<Masonry
-						className={'frame'}
-						options={{ transitionDuration: '0.5s', gutter: gap.current }}
-					>
+					<Masonry className={'frame'} options={{ transitionDuration: '0.5s', gutter: gap.current }}>
 						{Pics.length === 0 ? (
 							<h2>해당 키워드 검색결과가 없습니다.</h2>
 						) : (
@@ -110,7 +104,7 @@ export default function Gallery() {
 										<div
 											className='pic'
 											onClick={() => {
-												setOpen(true);
+												dispatch({ type: types.MODAL.start, payload: true });
 												setIndex(idx);
 											}}
 										>
@@ -125,12 +119,7 @@ export default function Gallery() {
 											<img
 												src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
 												alt='사용자 프로필 이미지'
-												onError={(e) =>
-													e.target.setAttribute(
-														'src',
-														'https://www.flickr.com/images/buddyicon.gif'
-													)
-												}
+												onError={e => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
 											/>
 											<span onClick={handleUser}>{pic.owner}</span>
 										</div>
@@ -142,13 +131,8 @@ export default function Gallery() {
 				</section>
 			</Layout>
 
-			<Modal Open={Open} setOpen={setOpen}>
-				{Pics[Index] && (
-					<img
-						src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`}
-						alt={'img'}
-					/>
-				)}
+			<Modal>
+				{Pics[Index] && <img src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`} alt={'img'} />}
 			</Modal>
 		</>
 	);

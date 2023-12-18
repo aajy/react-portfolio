@@ -8,7 +8,9 @@ export default function Footer() {
 		<footer className='Footer'>
 			<h1>Dcodelab</h1>
 			<p>2023 DcodeLab &copy; All Rights Reserved. </p>
-			<div>{MemberData && `${MemberData[0].position} :${MemberData[0].name}`}</div>
+			<div>
+				{MemberData[0]?.position} : {MemberData[0]?.name}
+			</div>
 			<ul>
 				<li>
 					<FaFacebookF />

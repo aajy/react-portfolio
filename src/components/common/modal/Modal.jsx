@@ -1,7 +1,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import './Modal.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import * as types from '../../../redux/action';
 
-export default function Modal({ Open, setOpen, children }) {
+export default function Modal({ children }) {
+	const dispatch = useDispatch();
+	const Open = useSelector(store => store.modalReducer.modal);
 	return (
 		<AnimatePresence>
 			{Open && (
@@ -13,7 +17,7 @@ export default function Modal({ Open, setOpen, children }) {
 					transition={{ duration: 1 }}
 				>
 					<div className='con'>{children}</div>
-					<span onClick={() => setOpen(false)}>close</span>
+					<span onClick={() => dispatch({ type: types.MODAL.start, payload: false })}>close</span>
 				</motion.aside>
 			)}
 		</AnimatePresence>
