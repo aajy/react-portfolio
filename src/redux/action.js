@@ -16,3 +16,6 @@ export const YOUTUBE = {
 export const MODAL = {
 	start: 'MODAL_START'
 };
+export const MENU = {
+	start: 'MENU_START'
+};

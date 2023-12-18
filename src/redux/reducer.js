@@ -33,6 +33,14 @@ const modalReducer = (state = { modal: false }, action) => {
 			return state;
 	}
 };
+const menuReducer = (state = { menu: false }, action) => {
+	switch (action.type) {
+		case types.MENU.start:
+			return { ...state, menu: action.payload };
+		default:
+			return state;
+	}
+};
 
-const reducers = combineReducers({ memberReducer, memberHistoryReducer, youtubeReducer, modalReducer });
+const reducers = combineReducers({ memberReducer, memberHistoryReducer, youtubeReducer, modalReducer, menuReducer });
 export default reducers;

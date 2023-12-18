@@ -56,7 +56,7 @@ function App() {
 	}, [fetchDepartment, fetchHistory, fetchYoutube]);
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header isDark={Dark} setDark={() => setDark(!Dark)} Toggle={Toggle} setToggle={setToggle} />
+			<Header isDark={Dark} setDark={() => setDark(!Dark)} />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
@@ -66,7 +66,7 @@ function App() {
 			<Route path='/youtube' component={Youtube} />
 			<Route path='/detail/:id' component={Detail} />
 			<Footer />
-			{Toggle && <Menu setToggle={setToggle} />}
+			<Menu />
 		</div>
 	);
 }
