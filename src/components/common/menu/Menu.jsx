@@ -1,16 +1,25 @@
 import { useCallback, useEffect } from 'react';
 import './Menu.scss';
-export default function Menu({ setToggle }) {
+import { useDispatch, useSelector } from 'react-redux';
+import * as types from '../../../redux/actionType';
+
+export default function Menu() {
+	const dispatch = useDispatch();
+	const Open = useSelector(store => store.menuReducer.menu);
 	const closeMenu = useCallback(() => {
-		window.innerWidth >= 1000 && setToggle(false);
-	}, [setToggle]);
+		window.innerWidth >= 1000 && dispatch({ type: types.MENU.start, payload: false });
+	}, [dispatch]);
 	useEffect(() => {
 		window.addEventListener('resize', closeMenu);
 		return () => window.removeEventListener('resize', closeMenu);
 	}, [closeMenu]);
 	return (
-		<div className='Menu'>
-			<h1 onClick={() => setToggle(false)}>Mobile Menu</h1>
-		</div>
+		<>
+			{Open && (
+				<div className='Menu'>
+					<h1 onClick={() => dispatch({ type: types.MENU.start, payload: false })}>Mobile Menu</h1>
+				</div>
+			)}
+		</>
 	);
 }

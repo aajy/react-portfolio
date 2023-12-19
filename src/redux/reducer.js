@@ -25,10 +25,14 @@ const flickrReducer = (state = { flickr: [] }, action) => {
 	else if (action.type === types.FLICKR.fail) return { ...state, flickr: action.payload };
 	else return state;
 };
-const modalReducer = (state = { flickr: [] }, action) => {
+const modalReducer = (state = { modal: [] }, action) => {
 	if (action.type === types.MODAL.start) return { ...state, modal: action.payload };
 	else return state;
 };
+const menuReducer = (state = { menu: [] }, action) => {
+	if (action.type === types.MENU.start) return { ...state, menu: action.payload };
+	else return state;
+};
 
-const reducers = combineReducers({ membersReducer, historyReducer, youtubeReducer, flickrReducer, modalReducer });
+const reducers = combineReducers({ membersReducer, historyReducer, youtubeReducer, flickrReducer, modalReducer, menuReducer });
 export default reducers;
