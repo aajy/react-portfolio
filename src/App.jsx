@@ -18,11 +18,8 @@ import Detail from './components/sub/youtube/Detail';
 import * as types from './redux/actionType';
 import { useSelector, useDispatch } from 'react-redux';
 function App() {
-	const [Dark, setDark] = useState(false);
-
 	const dispatch = useDispatch();
-	useSelector(store => console.log(store));
-
+	const Dark = useSelector(store => store.darkReducer.dark);
 	useEffect(() => {
 		dispatch({ type: types.MEMBERS.start });
 		dispatch({ type: types.HISTORY.start });
@@ -32,7 +29,7 @@ function App() {
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header Dark={Dark} setDark={setDark} />
+			<Header />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
