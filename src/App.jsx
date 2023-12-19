@@ -15,18 +15,25 @@ import { useEffect, useState } from 'react';
 import { useMedia } from './hooks/useMedia';
 import Menu from './components/common/menu/Menu';
 import Detail from './components/sub/youtube/Detail';
+import * as types from './redux/actionType';
+import { useSelector, useDispatch } from 'react-redux';
 function App() {
 	const [Dark, setDark] = useState(false);
 	const [Toggle, setToggle] = useState(false);
 
+	const dispatch = useDispatch();
+	useSelector(store => console.log(store));
+
+	useEffect(() => {
+		dispatch({ type: types.MEMBERS.start });
+		dispatch({ type: types.HISTORY.start });
+		dispatch({ type: types.YOUTUBE.start });
+		dispatch({ type: types.FLICKR.start, opt: { type: 'user', id: '198783018@N02' } });
+	}, [dispatch]);
+
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header
-				isDark={Dark}
-				setDark={() => setDark(!Dark)}
-				Toggle={Toggle}
-				setToggle={setToggle}
-			/>
+			<Header isDark={Dark} setDark={() => setDark(!Dark)} Toggle={Toggle} setToggle={setToggle} />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
