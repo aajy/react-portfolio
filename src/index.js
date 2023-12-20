@@ -10,7 +10,7 @@ import historyReducer from './redux/historySlice';
 
 const store = configureStore({
 	reducer: {
-		youtubue: youtubeReducer,
+		youtube: youtubeReducer,
 		member: memberReducer,
 		history: historyReducer
 	}
