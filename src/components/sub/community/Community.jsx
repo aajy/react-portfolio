@@ -69,9 +69,6 @@ export default function Community() {
 
 	//글 삭제 함수
 	const deletePost = (delIndex) => {
-		//console.log(delIndex);
-		//기존 map과 마찬가지로 기존 배열값을 deep copy해서 새로운배열 반환
-		//이때 안쪽에 조건문을 처리해서 특정 조건에 부합되는 값만 filtering해서 리턴
 		if (!window.confirm('정말 해당 게시글을 삭제하겠습니까?')) return;
 		setPost(Post.filter((_, idx) => delIndex !== idx));
 	};
@@ -98,12 +95,11 @@ export default function Community() {
 			})
 		);
 	};
-
+	//TODO::filtering
 	const filtering = (txt) => {
 		const abc = Post.filter(
 			(el) => el.title.indexOf(txt) >= 0 || el.content.indexOf(txt) >= 0
 		);
-		console.log(abc);
 	};
 
 	useEffect(() => {
@@ -121,7 +117,6 @@ export default function Community() {
 			len.current % perNum.current === 0
 				? len.current / perNum.current
 				: parseInt(len.current / perNum.current) + 1;
-		console.log(pageNum.current);
 	}, [Post]);
 
 	return (
