@@ -8,13 +8,19 @@ import youtubeReducer from './redux/youtubeSlice';
 import memberReducer from './redux/memberSlice';
 import historyReducer from './redux/historySlice';
 import flickrReducer from './redux/flickrSlice';
+import modalReducer from './redux/modalSlice';
+import menuReducer from './redux/menuSlice';
+import darkReducer from './redux/darkSlice';
 
 const store = configureStore({
 	reducer: {
 		youtube: youtubeReducer,
 		member: memberReducer,
 		history: historyReducer,
-		flickr: flickrReducer
+		flickr: flickrReducer,
+		modal: modalReducer,
+		menu: menuReducer,
+		dark: darkReducer
 	}
 });
 

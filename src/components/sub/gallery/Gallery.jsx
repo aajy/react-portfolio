@@ -4,15 +4,18 @@ import Layout from '../../common/layout/Layout';
 import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
 import Modal from '../../common/modal/Modal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { modalOpen } from '../../../redux/modalSlice';
+import { fetchFlickr } from '../../../redux/flickrSlice';
 
 export default function Gallery() {
+	const dispatch = useDispatch();
+	const Pics = useSelector(store => store.flickr.data);
 	const myID = useRef('198783018@N02');
 	const isUser = useRef(myID.current);
 	const refNav = useRef(null);
 	const refFrameWrap = useRef(null);
 	const gap = useRef(20);
-	const Pics = useSelector(state => state.flickr.data);
 	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
 	console.log('Pics', Pics);
@@ -25,18 +28,21 @@ export default function Gallery() {
 		if (e.target.classList.contains('on')) return;
 		isUser.current = '';
 		activateBtn(e);
+		dispatch(fetchFlickr({ type: 'interest' }));
 		//fetchFlickr({ type: 'interest' });
 	};
 	const handleMine = e => {
 		if (e.target.classList.contains('on') || isUser.current === myID.current) return;
 		isUser.current = myID.current;
 		activateBtn(e);
+		dispatch(fetchFlickr({ type: 'user', id: myID.current }));
 		//fetchFlickr({ type: 'user', id: myID.current });
 	};
 	const handleUser = e => {
 		if (isUser.current) return;
 		isUser.current = e.target.innerText;
 		activateBtn();
+		dispatch(fetchFlickr({ type: 'user', id: e.target.innerText }));
 		//fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
 	const handleSearch = e => {
@@ -46,6 +52,7 @@ export default function Gallery() {
 		const keyword = e.target.children[0].value;
 		if (!keyword.trim()) return; //검색어없이 빈칸만 있을 때  fetching함수 호출 강제중지
 		e.target.children[0].value = ''; //검색 후 input에 입력한 값 삭제
+		dispatch(fetchFlickr({ type: 'search', keyword: keyword }));
 		//fetchFlickr({ type: 'search', keyword: keyword });
 	};
 	// const fetchFlickr = async (opt) => {
@@ -75,6 +82,7 @@ export default function Gallery() {
 
 	useEffect(() => {
 		refFrameWrap.current.style.setProperty('--gap', gap.current + 'px');
+		//처음 호출시 기본데이터 가져오는건 필요 없음.
 		//fetchFlickr({ type: 'user', id: myID.current });
 	}, []);
 
@@ -107,7 +115,7 @@ export default function Gallery() {
 										<div
 											className='pic'
 											onClick={() => {
-												setOpen(true);
+												dispatch(modalOpen());
 												setIndex(idx);
 											}}
 										>

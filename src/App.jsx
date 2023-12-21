@@ -23,9 +23,7 @@ import { fetchFlickr } from './redux/flickrSlice';
 //git confige option 수정
 export default function App() {
 	const dispatch = useDispatch();
-	useSelector(store => console.log(store));
-	const [Dark, setDark] = useState(false);
-	const [Toggle, setToggle] = useState(false);
+	const Dark = useSelector(store => store.dark.isDark);
 
 	useEffect(() => {
 		dispatch(fetchYoutube());
@@ -36,7 +34,7 @@ export default function App() {
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header Dark={Dark} setDark={setDark} Toggle={Toggle} setToggle={setToggle} />
+			<Header />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
@@ -46,7 +44,7 @@ export default function App() {
 			<Route path='/youtube' component={Youtube} />
 			<Route path='/detail/:id' component={Detail} />
 			<Footer />
-			{Toggle && <Menu setToggle={setToggle} />}
+			<Menu />
 		</div>
 	);
 }
