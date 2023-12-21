@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchYoutube } from './redux/youtubeSlice';
 import { fetchMember } from './redux/memberSlice';
 import { fetchHistory } from './redux/historySlice';
+import { fetchFlickr } from './redux/flickrSlice';
 
 //git confige option 수정
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
 		dispatch(fetchYoutube());
 		dispatch(fetchMember());
 		dispatch(fetchHistory());
+		dispatch(fetchFlickr({ type: 'interest' }));
 	}, [dispatch]);
 
 	return (
