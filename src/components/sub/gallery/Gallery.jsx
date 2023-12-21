@@ -18,7 +18,6 @@ export default function Gallery() {
 	const gap = useRef(20);
 	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
-	console.log('Pics', Pics);
 	const activateBtn = e => {
 		const btns = refNav.current.querySelectorAll('button');
 		btns.forEach(btn => btn.classList.remove('on'));
@@ -29,21 +28,18 @@ export default function Gallery() {
 		isUser.current = '';
 		activateBtn(e);
 		dispatch(fetchFlickr({ type: 'interest' }));
-		//fetchFlickr({ type: 'interest' });
 	};
 	const handleMine = e => {
 		if (e.target.classList.contains('on') || isUser.current === myID.current) return;
 		isUser.current = myID.current;
 		activateBtn(e);
 		dispatch(fetchFlickr({ type: 'user', id: myID.current }));
-		//fetchFlickr({ type: 'user', id: myID.current });
 	};
 	const handleUser = e => {
 		if (isUser.current) return;
 		isUser.current = e.target.innerText;
 		activateBtn();
 		dispatch(fetchFlickr({ type: 'user', id: e.target.innerText }));
-		//fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
 	const handleSearch = e => {
 		e.preventDefault();
@@ -53,28 +49,7 @@ export default function Gallery() {
 		if (!keyword.trim()) return; //검색어없이 빈칸만 있을 때  fetching함수 호출 강제중지
 		e.target.children[0].value = ''; //검색 후 input에 입력한 값 삭제
 		dispatch(fetchFlickr({ type: 'search', keyword: keyword }));
-		//fetchFlickr({ type: 'search', keyword: keyword });
 	};
-	// const fetchFlickr = async (opt) => {
-	// 	const num = 50;
-
-	// 	const flickr_api = process.env.REACT_APP_FLICKR_API;
-	// 	const baseURL = `https://www.flickr.com/services/rest/?&api_key=${flickr_api}&per_page=${num}&format=json&nojsoncallback=1&method=`;
-	// 	const method_interest = 'flickr.interestingness.getList';
-	// 	const method_user = 'flickr.people.getPhotos';
-	// 	const method_search = 'flickr.photos.search';
-	// 	const interestURL = `${baseURL}${method_interest}`;
-	// 	const userURL = `${baseURL}${method_user}&user_id=${opt.id}`;
-	// 	const searchURL = `${baseURL}${method_search}&tags=${opt.keyword}`;
-	// 	let url = '';
-	// 	opt.type === 'user' && (url = userURL);
-	// 	opt.type === 'interest' && (url = interestURL);
-	// 	opt.type === 'search' && (url = searchURL);
-	// 	const data = await fetch(url);
-	// 	const json = await data.json();
-
-	// 	setPics(json.photos.photo);
-	// };
 
 	const openModal = e => {
 		setOpen(true);
@@ -82,8 +57,6 @@ export default function Gallery() {
 
 	useEffect(() => {
 		refFrameWrap.current.style.setProperty('--gap', gap.current + 'px');
-		//처음 호출시 기본데이터 가져오는건 필요 없음.
-		//fetchFlickr({ type: 'user', id: myID.current });
 	}, []);
 
 	return (
