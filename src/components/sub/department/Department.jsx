@@ -5,6 +5,8 @@ import { useCustomText } from '../../../hooks/useText';
 import { useSelector } from 'react-redux';
 
 export default function Department() {
+	const [Mounted, setMounted] = useState(true);
+
 	const MemberData = useSelector(store => store.memberReducer.members);
 	const HistoryData = Object.values(useSelector(store => store.memberHistoryReducer.history));
 	const HistoryTit = Object.keys(useSelector(store => store.memberHistoryReducer))[0];
@@ -15,13 +17,17 @@ export default function Department() {
 	const path = useRef(process.env.PUBLIC_URL); //public 폴더까지의 경로를구하는 구문
 	const shortenText = useCustomText('shorten');
 
+	useEffect(() => {
+		return () => setMounted(false); //언마운트시 setMounted(false);
+	}, [Mounted]);
+
 	return (
 		<Layout title={'Department'}>
 			<div className='historyBox'>
 				<h2>{combinedTitle(HistoryTit)}</h2>
 				<div className='con'>
-					{HistoryData &&
-						HistoryData.map((history, idx) => {
+					{Mounted &&
+						HistoryData?.map((history, idx) => {
 							return (
 								<article key={history + idx}>
 									<h3>{Object.keys(history)[0]}</h3>
@@ -39,8 +45,8 @@ export default function Department() {
 				{/* <h2>{combinedTitle(MemberTit)}</h2> */}
 				<h2>{combinedTitle('Members')}</h2>
 				<div className='con'>
-					{MemberData &&
-						MemberData.map((member, idx) => {
+					{Mounted &&
+						MemberData?.map((member, idx) => {
 							return (
 								<article key={member + idx}>
 									<div className='pic'>
