@@ -29,7 +29,7 @@ export default function App() {
 		dispatch(fetchYoutube());
 		dispatch(fetchMember());
 		dispatch(fetchHistory());
-		dispatch(fetchFlickr({ type: 'interest' }));
+		dispatch(fetchFlickr({ type: 'user', id: '198783018@N02' }));
 	}, [dispatch]);
 
 	return (
