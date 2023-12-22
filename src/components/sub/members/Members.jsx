@@ -94,11 +94,25 @@ export default function Members() {
 									{/* pwd1, pwd2 */}
 									<tr>
 										<td>
-											<input type='password' name='pwd1' placeholder='Password' value={Val.pwd1} onChange={handleChange} />
+											<input
+												type='password'
+												name='pwd1'
+												placeholder='Password'
+												autocomplete='new-password'
+												value={Val.pwd1}
+												onChange={handleChange}
+											/>
 											{Errs.pwd1 && <p>{Errs.pwd1}</p>}
 										</td>
 										<td>
-											<input type='password' name='pwd2' placeholder='Re-Password' value={Val.pwd2} onChange={handleChange} />
+											<input
+												type='password'
+												name='pwd2'
+												placeholder='Re-Password'
+												autocomplete='new-password'
+												value={Val.pwd2}
+												onChange={handleChange}
+											/>
 											{Errs.pwd2 && <p>{Errs.pwd2}</p>}
 										</td>
 									</tr>
