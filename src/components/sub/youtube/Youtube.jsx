@@ -1,8 +1,7 @@
 import Layout from '../../common/layout/Layout';
 import './Youtube.scss';
-import { useState, useEffect } from 'react';
 import { useCustomText } from '../../../hooks/useText';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function Youtube() {
@@ -12,12 +11,12 @@ export default function Youtube() {
 
 	return (
 		<Layout title={'Youtube'}>
-			{Vids.map((data, idx) => {
+			{Vids.map(data => {
 				const [date, time] = data.snippet.publishedAt.split('T');
 
 				return (
 					<article key={data.id}>
-						<h2>{shortenText(data.snippet.title, 70)}</h2>
+						<h2>{shortenText(data.snippet.title, 50)}</h2>
 
 						<div className='txt'>
 							<p>{shortenText(data.snippet.description, 250)}</p>

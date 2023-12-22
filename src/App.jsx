@@ -21,10 +21,11 @@ function App() {
 	const dispatch = useDispatch();
 	const Dark = useSelector(store => store.darkReducer.dark);
 	useEffect(() => {
-		dispatch({ type: types.MEMBERS.start });
-		dispatch({ type: types.HISTORY.start });
-		dispatch({ type: types.YOUTUBE.start });
-		dispatch({ type: types.FLICKR.start, opt: { type: 'user', id: '198783018@N02' } });
+		// dispatch({ type: types.MEMBERS.start });
+		// dispatch({ type: types.HISTORY.start });
+		// dispatch({ type: types.YOUTUBE.start });
+		// dispatch({ type: types.FLICKR.start });
+		['MEMBERS', 'HISTORY', 'YOUTUBE', 'FLICKR'].forEach(typeName => dispatch({ type: types[typeName].start }));
 	}, [dispatch]);
 
 	return (

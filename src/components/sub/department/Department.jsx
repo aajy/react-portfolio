@@ -8,7 +8,8 @@ export default function Department() {
 	const combinedTitle = useCustomText('combined');
 	const path = useRef(process.env.PUBLIC_URL);
 
-	const { historyReducer, membersReducer } = useSelector(store => store);
+	const membersReducer = useSelector(store => store.membersReducer);
+	const historyReducer = useSelector(store => store.historyReducer);
 	console.log(historyReducer, membersReducer);
 
 	const HistoryTit = Object.keys(historyReducer)[0];
