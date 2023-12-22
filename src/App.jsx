@@ -12,15 +12,14 @@ import './globalStyles/Reset.scss';
 import * as types from './redux/action';
 
 import { Route } from 'react-router-dom';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useCallback, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMedia } from './hooks/useMedia';
 import Menu from './components/common/menu/Menu';
 import Detail from './components/sub/youtube/Detail';
 function App() {
 	const dispatch = useDispatch();
-	const [Dark, setDark] = useState(false);
-	const [Toggle, setToggle] = useState(false);
+	const Dark = useSelector(store => store.darkReducer.dark);
 	const path = useRef(process.env.PUBLIC_URL);
 	const fetchDepartment = useCallback(async () => {
 		const data = await fetch(`${path.current}/DB/department.json`);
@@ -56,7 +55,7 @@ function App() {
 	}, [fetchDepartment, fetchHistory, fetchYoutube]);
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header isDark={Dark} setDark={() => setDark(!Dark)} />
+			<Header />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
