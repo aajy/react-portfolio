@@ -5,6 +5,7 @@ import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
 import Modal from '../../common/modal/Modal';
 import { useFlickrQuery } from '../../../hooks/useFlickrQuery';
+import { useGlobalData } from '../../../hooks/useGlobalData';
 
 export default function Gallery() {
 	const myID = useRef('198783018@N02');
@@ -12,11 +13,10 @@ export default function Gallery() {
 	const refNav = useRef(null);
 	const refFrameWrap = useRef(null);
 	const gap = useRef(20);
-	const [Opt, setOpt] = useState({});
-
-	const [Open, setOpen] = useState(false);
+	const [Opt, setOpt] = useState({ type: 'user', id: myID.current });
 	const [Index, setIndex] = useState(0);
-	const { data: Pics, isSuccess } = useFlickrQuery({ type: 'user', id: myID.current });
+	const { data: Pics, isSuccess } = useFlickrQuery(Opt);
+	const { setModalOpen } = useGlobalData();
 
 	const activateBtn = e => {
 		const btns = refNav.current.querySelectorAll('button');
@@ -49,10 +49,6 @@ export default function Gallery() {
 		if (!keyword.trim()) return; //검색어없이 빈칸만 있을 때  fetching함수 호출 강제중지
 		e.target.children[0].value = ''; //검색 후 input에 입력한 값 삭제
 		setOpt({ type: 'search', keyword: keyword });
-	};
-
-	const openModal = e => {
-		setOpen(true);
 	};
 
 	useEffect(() => {
@@ -90,7 +86,7 @@ export default function Gallery() {
 										<div
 											className='pic'
 											onClick={() => {
-												setOpen(true);
+												setModalOpen(true);
 												setIndex(idx);
 											}}
 										>
@@ -117,7 +113,7 @@ export default function Gallery() {
 				</section>
 			</Layout>
 
-			<Modal Open={Open} setOpen={setOpen}>
+			<Modal>
 				{isSuccess && Pics[Index] && (
 					<img src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`} alt={'img'} />
 				)}
