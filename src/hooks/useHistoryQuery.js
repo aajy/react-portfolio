@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
 const path = process.env.PUBLIC_URL;
-const fetchHihstory = async () => {
-	const response = await fetch(`${path}/DB/hihstory.json`);
+const fetchHistory = async () => {
+	const response = await fetch(`${path}/DB/history.json`);
 	const data = await response.json();
-	return data.members;
+	return data.history;
 };
 
-export const useHihstoryQuery = () => {
-	return useQuery(['fetchHihstory'], fetchHihstory, {
+export const useHistoryQuery = () => {
+	return useQuery(['fetchHistory'], fetchHistory, {
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,
 		cacheTime: 1000 * 60 * 60 * 24,
