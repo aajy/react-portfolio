@@ -4,6 +4,7 @@ import Layout from '../../common/layout/Layout';
 import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
 import Modal from '../../common/modal/Modal';
+import { useFlickrQuery } from '../../../hooks/useFlickrQuery';
 
 export default function Gallery() {
 	const myID = useRef('198783018@N02');
@@ -11,71 +12,52 @@ export default function Gallery() {
 	const refNav = useRef(null);
 	const refFrameWrap = useRef(null);
 	const gap = useRef(20);
-	const [Pics, setPics] = useState([]);
+	const [Opt, setOpt] = useState({});
+
 	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
+	const { data: Pics, isSuccess } = useFlickrQuery({ type: 'user', id: myID.current });
 
-	const activateBtn = (e) => {
+	const activateBtn = e => {
 		const btns = refNav.current.querySelectorAll('button');
-		btns.forEach((btn) => btn.classList.remove('on'));
+		btns.forEach(btn => btn.classList.remove('on'));
 		e && e.target.classList.add('on');
 	};
-	const handleInterest = (e) => {
+	const handleInterest = e => {
 		if (e.target.classList.contains('on')) return;
 		isUser.current = '';
 		activateBtn(e);
-		fetchFlickr({ type: 'interest' });
+		setOpt({ type: 'interest' });
 	};
-	const handleMine = (e) => {
-		if (e.target.classList.contains('on') || isUser.current === myID.current)
-			return;
+	const handleMine = e => {
+		if (e.target.classList.contains('on') || isUser.current === myID.current) return;
 		isUser.current = myID.current;
 		activateBtn(e);
-		fetchFlickr({ type: 'user', id: myID.current });
+		setOpt({ type: 'user', id: myID.current });
 	};
-	const handleUser = (e) => {
+	const handleUser = e => {
 		if (isUser.current) return;
 		isUser.current = e.target.innerText;
 		activateBtn();
-		fetchFlickr({ type: 'user', id: e.target.innerText });
+		setOpt({ type: 'user', id: e.target.innerText });
 	};
-	const handleSearch = (e) => {
+	const handleSearch = e => {
 		e.preventDefault();
 		isUser.current = '';
 		activateBtn();
 		const keyword = e.target.children[0].value;
 		if (!keyword.trim()) return; //검색어없이 빈칸만 있을 때  fetching함수 호출 강제중지
 		e.target.children[0].value = ''; //검색 후 input에 입력한 값 삭제
-		fetchFlickr({ type: 'search', keyword: keyword });
-	};
-	const fetchFlickr = async (opt) => {
-		const num = 50;
-
-		const flickr_api = process.env.REACT_APP_FLICKR_API;
-		const baseURL = `https://www.flickr.com/services/rest/?&api_key=${flickr_api}&per_page=${num}&format=json&nojsoncallback=1&method=`;
-		const method_interest = 'flickr.interestingness.getList';
-		const method_user = 'flickr.people.getPhotos';
-		const method_search = 'flickr.photos.search';
-		const interestURL = `${baseURL}${method_interest}`;
-		const userURL = `${baseURL}${method_user}&user_id=${opt.id}`;
-		const searchURL = `${baseURL}${method_search}&tags=${opt.keyword}`;
-		let url = '';
-		opt.type === 'user' && (url = userURL);
-		opt.type === 'interest' && (url = interestURL);
-		opt.type === 'search' && (url = searchURL);
-		const data = await fetch(url);
-		const json = await data.json();
-
-		setPics(json.photos.photo);
+		setOpt({ type: 'search', keyword: keyword });
 	};
 
-	const openModal = (e) => {
+	const openModal = e => {
 		setOpen(true);
 	};
 
 	useEffect(() => {
 		refFrameWrap.current.style.setProperty('--gap', gap.current + 'px');
-		fetchFlickr({ type: 'user', id: myID.current });
+		setOpt({ type: 'user', id: myID.current });
 	}, []);
 
 	return (
@@ -97,13 +79,11 @@ export default function Gallery() {
 				</article>
 
 				<section className='frameWrap' ref={refFrameWrap}>
-					<Masonry
-						className={'frame'}
-						options={{ transitionDuration: '0.5s', gutter: gap.current }}
-					>
-						{Pics.length === 0 ? (
+					<Masonry className={'frame'} options={{ transitionDuration: '0.5s', gutter: gap.current }}>
+						{isSuccess && Pics.length === 0 ? (
 							<h2>해당 키워드 검색결과가 없습니다.</h2>
 						) : (
+							isSuccess &&
 							Pics.map((pic, idx) => {
 								return (
 									<article key={pic.id}>
@@ -125,12 +105,7 @@ export default function Gallery() {
 											<img
 												src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
 												alt='사용자 프로필 이미지'
-												onError={(e) =>
-													e.target.setAttribute(
-														'src',
-														'https://www.flickr.com/images/buddyicon.gif'
-													)
-												}
+												onError={e => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
 											/>
 											<span onClick={handleUser}>{pic.owner}</span>
 										</div>
@@ -143,11 +118,8 @@ export default function Gallery() {
 			</Layout>
 
 			<Modal Open={Open} setOpen={setOpen}>
-				{Pics[Index] && (
-					<img
-						src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`}
-						alt={'img'}
-					/>
+				{isSuccess && Pics[Index] && (
+					<img src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`} alt={'img'} />
 				)}
 			</Modal>
 		</>
