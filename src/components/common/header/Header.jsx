@@ -2,9 +2,11 @@ import './Header.scss';
 import { NavLink, Link } from 'react-router-dom';
 import { useGlobalData } from '../../../hooks/useGlobalData';
 import ThemeControl from '../themeControl/ThemeControl';
+import { useCookie } from '../../../hooks/useCookie';
+import DarkMode from '../darkMode/DarkMode';
 
 export default function Header() {
-	const { MenuOpen, setMenuOpen, Dark, setDark } = useGlobalData();
+	const { MenuOpen, setMenuOpen } = useGlobalData();
 	return (
 		<header className='Header'>
 			<h1>
@@ -43,10 +45,7 @@ export default function Header() {
 					</NavLink>
 				</li>
 			</ul>
-			{/* <button onClick={setDark}>theme</button> */}
-			<div className={`themeBox ${Dark && 'dark'}`} onClick={() => setDark(!Dark)}>
-				<div className='ball'></div>
-			</div>
+			<DarkMode />
 			<ThemeControl />
 			<button className='menuToggle' onClick={() => setMenuOpen(!MenuOpen)}>
 				menu
