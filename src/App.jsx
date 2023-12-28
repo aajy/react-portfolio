@@ -20,12 +20,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useGlobalData } from './hooks/useGlobalData';
 
 function App() {
-	const { Dark } = useGlobalData();
+	const { Mode } = useGlobalData();
 	const queryClient = new QueryClient();
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
+			<div className={`wrap ${Mode ? 'dark' : 'light'} ${useMedia()}`}>
 				<Header />
 				<Route exact path='/' component={MainWrap} />
 				<Route path='/department' component={Department} />

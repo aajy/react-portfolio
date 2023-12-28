@@ -2,7 +2,6 @@ import './Header.scss';
 import { NavLink, Link } from 'react-router-dom';
 import { useGlobalData } from '../../../hooks/useGlobalData';
 import ThemeControl from '../themeControl/ThemeControl';
-import { useCookie } from '../../../hooks/useCookie';
 import DarkMode from '../darkMode/DarkMode';
 
 export default function Header() {
