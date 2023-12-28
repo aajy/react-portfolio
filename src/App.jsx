@@ -11,9 +11,9 @@ import './globalStyles/Variables.scss';
 import './globalStyles/Reset.scss';
 
 import { Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { useMedia } from './hooks/useMedia';
 import Menu from './components/common/menu/Menu';
+import CookieModal from './components/common/cookieModal/CookieModal';
 import Detail from './components/sub/youtube/Detail';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -37,6 +37,9 @@ function App() {
 				<Route path='/detail/:id' component={Detail} />
 				<Footer />
 				<Menu />
+				<CookieModal wid={300} ht={200}>
+					<h1>쿠키팝업</h1>
+				</CookieModal>
 			</div>
 			<ReactQueryDevtools />
 		</QueryClientProvider>
