@@ -10,21 +10,71 @@
 
 		.swiper-wrapper {
 			.swiper-slide {
-				padding: 100px 0px;
+				padding: 18vh 0px 15vh;
 
 				> .inner {
 					width: 70%;
 					height: 100%;
-					background-color: var(--pointColor);
 					margin: 0 auto;
 					display: flex;
-					justify-content: center;
+					justify-content: space-between;
 					flex-wrap: wrap;
 					align-content: center;
-					color: var(--bgColor);
+
+					.picBox {
+						width: 35%;
+						height: 100%;
+						position: relative;
+						display: flex;
+
+						> p {
+							width: 100%;
+							height: 100%;
+							overflow: hidden;
+							position: relative;
+							position: absolute;
+							top: 0;
+							left: 0;
+
+							img {
+								width: 100%;
+								height: 100%;
+								object-fit: cover;
+								transform: scale(1.5);
+							}
+
+							&:nth-of-type(1) {
+								top: 40px;
+								left: 40px;
+								filter: blur(30px) saturate(1.5);
+								opacity: 0.8;
+							}
+						}
+					}
+					.txtBox {
+						width: 55%;
+						height: 100%;
+
+						h2 {
+							font-size: 3.8vmax;
+							font-weight: normal;
+							margin-bottom: 100px;
+						}
+
+						a {
+							background-color: var(--baseColor);
+							color: var(--bgColor);
+							border: none;
+							display: inline-block;
+							padding: 10px 30px;
+							font-size: 0.8rem;
+							box-shadow: 10px 10px 20px rgba(var(--baseColor-code), 0.5);
+						}
+					}
 				}
 			}
 		}
+
 		.swiper-pagination {
 			width: 70%;
 			left: 15%;
@@ -38,7 +88,7 @@
 				border-radius: 5px;
 				background-color: var(--baseColor);
 				color: var(--bgColor);
-				// text-indent: -9999px;
+				text-indent: -9999px;
 				cursor: pointer;
 				transition-property: width, background-color;
 				transition-duration: 0.5s;
@@ -49,6 +99,7 @@
 				background-color: var(--pointColor);
 			}
 		}
+
 		.swiperController {
 			position: absolute;
 			bottom: 50px;
