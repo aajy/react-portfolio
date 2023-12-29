@@ -1,60 +1,37 @@
 import './Visual.scss';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useCustomText } from '../../../hooks/useText';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
-function Btns() {
-	//Swiper컴포넌트 안쪽에 있는 또다른 자식 컴포넌트 안쪽에서만 useSwiper hook사용가능
-	//hook으로부터 생성된 객체(인스턴스)에는 다양한 prototype메서드와 property값 활용가능
-	const swiper = useSwiper();
-
-	useEffect(() => {
-		swiper.init(0);
-		swiper.slideNext(300);
-	}, [swiper]);
-
-	return (
-		<nav className='swiperController'>
-			<button
-				onClick={() => {
-					swiper.slideNext(300);
-					swiper.autoplay.start();
-				}}
-			>
-				start
-			</button>
-			<button onClick={() => swiper.autoplay.stop()}>stop</button>
-		</nav>
-	);
-}
-
+//Visual parent component
 export default function Visual() {
 	const { youtube } = useSelector(store => store.youtubeReducer);
 	const shortenText = useCustomText('shorten');
+	const swiperRef = useRef(null);
+
+	//swiper pagination option
+	const pagination = useRef({
+		clickable: true,
+		renderBullet: (index, className) => `<span class=${className}>${index + 1}</span>`
+	});
+
+	//swiper autoplay option
+	const autoplay = useRef({
+		delay: 2000,
+		disableOnInteraction: true
+	});
 
 	return (
 		<figure className='Visual'>
-			<Swiper
-				modules={[Pagination, Autoplay]}
-				pagination={{
-					clickable: true,
-					renderBullet: (index, className) => {
-						return `<span class=${className}>${index + 1}</span>`;
-					}
-				}}
-				autoplay={{
-					delay: 5000,
-					disableOnInteraction: true
-				}}
-				loop={true}
-			>
+			<Swiper modules={[Pagination, Autoplay]} pagination={pagination.current} autoplay={autoplay.current} loop={true}>
 				{youtube.map((vid, idx) => {
 					if (idx >= 5) return null;
+
 					return (
 						<SwiperSlide key={vid.id}>
 							<div className='inner'>
@@ -68,9 +45,9 @@ export default function Visual() {
 								</div>
 								<div className='txtBox'>
 									<h2>{shortenText(vid.snippet.title, 50)}</h2>
-									<Link to={`/detail/${vid.id}`}>
-										{' '}
-										<span></span>View Detail{' '}
+
+									<Link to={`/detail/${vid.id}`} onMouseEnter={swiperRef.current.autoplay.stop} onMouseLeave={swiperRef.current.autoplay.start}>
+										<span></span>View Detail
 									</Link>
 								</div>
 							</div>
@@ -78,8 +55,32 @@ export default function Visual() {
 					);
 				})}
 
-				<Btns />
+				<Btns swiperRef={swiperRef} />
 			</Swiper>
 		</figure>
+	);
+}
+
+//Swiper control child component
+function Btns({ swiperRef }) {
+	swiperRef.current = useSwiper();
+
+	useEffect(() => {
+		swiperRef.current.init(0);
+		swiperRef.current.slideNext(300);
+	}, [swiperRef]);
+
+	return (
+		<nav className='swiperController'>
+			<button
+				onClick={() => {
+					swiperRef.current.slideNext(300);
+					swiperRef.current.autoplay.start();
+				}}
+			>
+				start
+			</button>
+			<button onClick={() => swiperRef.current.autoplay.stop()}>stop</button>
+		</nav>
 	);
 }
