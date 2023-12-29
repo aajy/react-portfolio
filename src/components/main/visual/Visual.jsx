@@ -1,6 +1,8 @@
-import 'swiper/css';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import './Visual.scss';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper';
 import { useSelector } from 'react-redux';
 
 export default function Visual() {
@@ -8,7 +10,16 @@ export default function Visual() {
 	console.log('youtube', youtube);
 	return (
 		<figure className='Visual'>
-			<Swiper>
+			<Swiper
+				modules={[Pagination]}
+				pagination={{
+					clickable: true,
+					renderBullet: (index, className) => {
+						return `<span class=${className}>${index + 1}</span>`;
+					}
+				}}
+				loop={true}
+			>
 				{youtube.map((vid, idx) => {
 					if (idx >= 5) return null;
 					return (
