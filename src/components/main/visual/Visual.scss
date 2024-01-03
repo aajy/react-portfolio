@@ -2,4 +2,35 @@
 	width: 100%;
 	height: calc(100vh - 90px);
 	position: relative;
+
+	.swiper {
+		width: 100%;
+		height: 100%;
+		padding: 15vh 0px;
+
+		.swiper-wrapper {
+			width: 100%;
+			height: 100%;
+
+			.swiper-slide {
+				> .inner {
+					width: 100%;
+					height: 100%;
+
+					.picBox {
+						width: 100%;
+						height: 100%;
+						overflow: hidden;
+
+						img {
+							width: 100%;
+							height: 100%;
+							object-fit: cover;
+							transform: scale(1.5);
+						}
+					}
+				}
+			}
+		}
+	}
 }
