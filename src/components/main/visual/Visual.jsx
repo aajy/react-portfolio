@@ -1,5 +1,48 @@
+import { Swiper, SwiperSlide } from 'swiper/react';
 import './Visual.scss';
+import 'swiper/css';
+import { useYoutubeQuery } from '../../../hooks/useYoutubeQuery';
+import { useRef } from 'react';
 
 export default function Visual() {
-	return <div className='Visual'>Visual</div>;
+	const { isSuccess, data } = useYoutubeQuery();
+	const swiperOpt = useRef({
+		loop: true,
+		slidesPerView: 1,
+		spaceBetween: 0,
+		centeredSlides: true,
+		breakpoints: {
+			1000: {
+				sliderPerView: 2,
+				spaceBetween: 50
+			},
+			1400: {
+				sliderPerView: 3,
+				spaceBetween: 50
+			}
+		}
+	});
+	console.log(data);
+	return (
+		<figure className='Visual'>
+			<Swiper {...swiperOpt.current}>
+				{isSuccess &&
+					data.map((el, idx) => {
+						if (idx >= 5) return null;
+						return (
+							<SwiperSlide key={el.id}>
+								<div className='pic'>
+									<p>
+										<img src={el.snippet.thumbnails.standard.url} alt={el.snippet.title} />
+									</p>
+									<p>
+										<img src={el.snippet.thumbnails.standard.url} alt={el.snippet.title} />
+									</p>
+								</div>
+							</SwiperSlide>
+						);
+					})}
+			</Swiper>
+		</figure>
+	);
 }
