@@ -11,8 +11,11 @@ export default function Visual() {
 		modules: [Autoplay],
 		autoplay: { delay: 4000, disableOnInteraction: true },
 		loop: true,
-		slidesPerView: 3,
+		slidesPerView: 1,
 		centeredSlides: true,
+		breakpoints: {
+			1000: { slidesPerView: 3 }
+		},
 		onSwiper: swiper => {
 			swiper.slideNext(300);
 		}
