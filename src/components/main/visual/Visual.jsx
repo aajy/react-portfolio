@@ -9,22 +9,18 @@ export default function Visual() {
 	const swiperOpt = useRef({
 		loop: true,
 		slidesPerView: 1,
-		spaceBetween: 0,
+		spaceBetween: 50,
 		centeredSlides: true,
+		onSwiper: swiper => swiper.slideNext(300),
 		breakpoints: {
-			1000: {
-				sliderPerView: 2,
-				spaceBetween: 50
-			},
-			1400: {
-				sliderPerView: 3,
-				spaceBetween: 50
-			}
+			1000: { slidesPerView: 2 },
+			1400: { slidesPerView: 3 }
 		}
 	});
 	console.log(data);
 	return (
 		<figure className='Visual'>
+			<div className='txtBox'></div>
 			<Swiper {...swiperOpt.current}>
 				{isSuccess &&
 					data.map((el, idx) => {
