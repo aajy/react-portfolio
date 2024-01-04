@@ -45,7 +45,7 @@ export default function Visual() {
 	};
 
 	return (
-		<figure className='Visual'>
+		<figure className='Visual myScroll'>
 			<div className='txtBox'>
 				<ul>
 					{isSuccess &&
