@@ -9,12 +9,13 @@ export default function Btns() {
 	const wrap = useRef(null);
 	const secs = useRef(null);
 	const btns = useRef(null);
+	const baseLine = useRef(-window.innerHeight / 2); //현재 섹션의 컨텐츠가 절반이상 보여야지 활성화처리
 
 	const activation = () => {
 		const scroll = wrap.current.scrollTop;
 
 		secs.current.forEach((sec, idx) => {
-			if (scroll >= secs.current[idx].offsetTop) {
+			if (scroll >= secs.current[idx].offsetTop + baseLine.current) {
 				Array.from(btns.current.children).forEach(btn => btn.classList.remove('on'));
 				btns.current.children[idx].classList.add('on');
 			}
@@ -39,7 +40,7 @@ export default function Btns() {
 					return (
 						<li
 							key={idx}
-							className={idx === Index ? 'on' : ''}
+							className={idx === 0 ? 'on' : ''}
 							onClick={() => {
 								//new Anime(선택자, {속성명1:속성값2, 속성명2:속성값2}, {duration:속도, easeType:가속도, callback:컴플릭함수})
 								new Anime(wrap.current, { scroll: secs.current[idx].offsetTop - 100 }, { duration: 1000 });
