@@ -25,7 +25,7 @@ function App() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<div className={`wrap ${Mode ? 'dark' : 'light'} ${useMedia()}`}>
+			<div className={`wrap ${Mode === 'light' ? 'light' : 'dark'} ${useMedia()}`}>
 				<Header />
 				<Route exact path='/' component={MainWrap} />
 				<Route path='/department' component={Department} />
