@@ -4,7 +4,6 @@ import { useRef, useState, useEffect } from 'react';
 import { useThrottle } from '../../../hooks/useThrottle';
 
 export default function Btns() {
-	const [Index, setIndex] = useState(0);
 	const [Num, setNum] = useState(0);
 	const wrap = useRef(null);
 	const secs = useRef(null);
@@ -21,11 +20,15 @@ export default function Btns() {
 			}
 		});
 	};
+	const handleClick = idx => {
+		new Anime(wrap.current, { scroll: secs.current[idx].offsetTop - 100 }, { duration: 1000 });
+	};
+
 	const throttledActivation = useThrottle(activation);
 
 	useEffect(() => {
 		wrap.current = document.querySelector('.wrap');
-		secs.current = document.querySelectorAll('.myScroll');
+		secs.current = wrap.current.querySelectorAll('.myScroll');
 		setNum(secs.current.length);
 
 		wrap.current.addEventListener('scroll', throttledActivation);
@@ -37,16 +40,7 @@ export default function Btns() {
 			{Array(Num)
 				.fill()
 				.map((_, idx) => {
-					return (
-						<li
-							key={idx}
-							className={idx === 0 ? 'on' : ''}
-							onClick={() => {
-								//new Anime(선택자, {속성명1:속성값2, 속성명2:속성값2}, {duration:속도, easeType:가속도, callback:컴플릭함수})
-								new Anime(wrap.current, { scroll: secs.current[idx].offsetTop - 100 }, { duration: 1000 });
-							}}
-						></li>
-					);
+					return <li key={idx} className={idx === 0 ? 'on' : ''} onClick={() => handleClick(idx)}></li>;
 				})}
 		</ul>
 	);
