@@ -16,6 +16,7 @@ export default function Layout({ title, children }) {
 	return (
 		<main className={`Layout ${title}`} ref={refFrame}>
 			<h1 ref={refTitle}>{title}</h1>
+			<div className='btnTop'>Top</div>
 			<div className='bar'></div>
 			{children}
 		</main>
