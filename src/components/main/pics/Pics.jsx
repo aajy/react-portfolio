@@ -1,20 +1,28 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useScroll } from '../../../hooks/useScroll';
 import './Pics.scss';
 
 export default function Pics() {
-	const { scrollFrame, getCurrentScroll } = useScroll();
-	const [Scrolled, setScrolled] = useState(0);
-
+	const [Frame, setFrame] = useState(null);
 	const thisEl = useRef(null);
 	const boxEl = useRef(null);
+	const { getCurrentScroll } = useScroll(Frame);
+
+	const handleScroll = useCallback(() => {
+		const scroll = getCurrentScroll(thisEl.current, -window.innerHeight / 2);
+
+		scroll >= 0 && (boxEl.current.style.transform = `translateX(${scroll}px)`);
+	}, [getCurrentScroll]);
 
 	useEffect(() => {
-		scrollFrame?.addEventListener('scroll', () => {
-			setScrolled(getCurrentScroll(thisEl.current)); //getCurrentScroll에서 받는 파라미터값의 높이를 반환.
-			if (Scrolled >= 0) boxEl.current.style.transform = `translateX(${Scrolled}px)`;
-		});
-	}, [scrollFrame, getCurrentScroll]);
+		setFrame(thisEl.current?.closest('.wrap'));
+	}, []);
+
+	useEffect(() => {
+		Frame?.addEventListener('scroll', handleScroll);
+		return () => Frame?.removeEventListener('scroll', handleScroll);
+	}, [Frame, handleScroll]);
+
 	return (
 		<section className='Pics myScroll' ref={thisEl}>
 			<div className='box' ref={boxEl}></div>
