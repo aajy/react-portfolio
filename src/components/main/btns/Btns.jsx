@@ -7,6 +7,8 @@ export default function Btns(opt) {
 	const defOpt = useRef({ frame: '.wrap', items: '.myScroll', base: -window.innerHeight / 2, isAuto: true });
 	const resultOpt = useRef({ ...defOpt.current, ...opt });
 	const [Num, setNum] = useState(0);
+	//const [Mounted, setMounted] = useState(true);
+
 	const isAutoScroll = useRef(resultOpt.current.isAuto);
 	const wrap = useRef(null);
 	const secs = useRef(null);
@@ -15,12 +17,13 @@ export default function Btns(opt) {
 	const isMotion = useRef(false);
 
 	const activation = () => {
-		const scroll = wrap.current.scrollTop;
+		const scroll = wrap.current?.scrollTop;
 
-		secs.current.forEach((sec, idx) => {
+		secs.current.forEach((_, idx) => {
 			if (scroll >= secs.current[idx].offsetTop + baseLine.current) {
-				Array.from(btns.current.children).forEach(btn => btn.classList.remove('on'));
-				btns.current.children[idx].classList.add('on');
+				const btnsArr = btns.current?.querySelectorAll('li');
+				btnsArr?.forEach(btn => btn.classList.remove('on'));
+				btns.current?.querySelectorAll('li')[idx]?.classList.add('on');
 			}
 		});
 	};
@@ -70,7 +73,7 @@ export default function Btns(opt) {
 			wrap.current.removeEventListener('scroll', throttledActivation);
 			wrap.current.removeEventListener('mousewheel', autoScroll);
 		};
-	}, [throttledActivation, autoScroll, throttledModifyPos, resultOpt.current.frame, resultOpt.current.items]);
+	}, [autoScroll, throttledActivation, throttledModifyPos, resultOpt.current.frame, resultOpt.current.items]);
 
 	return (
 		<ul className='Btns' ref={btns}>
