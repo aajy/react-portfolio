@@ -1,7 +1,13 @@
 .Pics {
 	width: 100%;
 	height: 100vh;
-	background-color: lightblue;
+	background: lightblue;
 	position: relative;
-	padding: 10vh;
+	padding: 10vw;
+
+	.box {
+		width: 300px;
+		height: 300px;
+		background: #fff;
+	}
 }
