@@ -2,13 +2,14 @@
 	width: 100%;
 	height: calc(100vh - 90px);
 	position: relative;
+	overflow: hidden;
 
 	.txtBox {
 		width: 40%;
 		height: 100%;
 		padding-left: 15vw;
 		position: absolute;
-		top: 0;
+		top: 0px;
 		left: 0;
 		z-index: 2;
 
@@ -52,8 +53,6 @@
 
 		.swiper-wrapper {
 			height: inherit;
-			position: relative;
-			z-index: 2;
 
 			.swiper-slide {
 				width: 100%;
@@ -77,9 +76,9 @@
 						overflow: hidden;
 
 						&:nth-of-type(1) {
-							filter: blur(20px) saturate(1.2);
-							transform: translate(30px, 30px);
-							opacity: 0.7;
+							filter: blur(30px) saturate(1.2);
+							transform: translate(40px, 40px);
+							opacity: 0.8;
 						}
 
 						img {
@@ -115,17 +114,67 @@
 			}
 		}
 	}
-	.preview {
+
+	.pagination {
 		position: absolute;
-		width: 100%;
-		bottom: 0;
-		z-index: 1;
+		bottom: 100px;
+		left: 15%;
+		display: flex;
+		gap: 10px;
+		z-index: 6;
+
+		li {
+			width: 10px;
+			height: 10px;
+			background: #888;
+			cursor: pointer;
+
+			&.on {
+				background: var(--pointColor);
+			}
+		}
+	}
+
+	.barFrame {
+		width: 70%;
+		height: 2px;
+		position: absolute;
+		bottom: 50px;
+		left: 15%;
+		background: #888;
+
+		.bar {
+			width: 0%;
+			height: 100%;
+			background: var(--pointColor);
+			position: absolute;
+			top: 0;
+			left: 0;
+			transition: width 0.5s;
+		}
+	}
+	.counter {
+		position: absolute;
+		bottom: 80px;
+		right: 15vw;
+		color: var(--baseColor);
+		font-size: 1.5rem;
+
+		strong {
+			font-size: 2.5rem;
+		}
+	}
+
+	//preview thumbnails
+	.preview {
 		p {
 			width: 120px;
 			height: 60px;
 			overflow: hidden;
 			position: absolute;
 			bottom: 5vh;
+			cursor: pointer;
+			z-index: 6;
 
 			img {
 				width: 100%;
@@ -141,6 +190,7 @@
 		}
 	}
 }
+
 .mobile,
 .tablet {
 	.Visual {
