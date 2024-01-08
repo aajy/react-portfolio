@@ -1,17 +1,34 @@
 import Anime from '../asset/anime';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
-//useScroll훅을 처음 초기화할때 무조건 인수로 state에 담겨있는 ScrollFrame요소를 전달 (중요)
-export function useScroll(scrollFrame) {
+export function useScroll(customHandler) {
+	//순서1 - 커스텀훅 안쪽에서 자체적으로 빈 참조객체 생성
+	const refEl = useRef(null);
+	const [Frame, setFrame] = useState(null);
 	const scrollTo = targetPos => {
-		scrollFrame && new Anime(scrollFrame, { scroll: targetPos });
+		Frame && new Anime(Frame, { scroll: targetPos });
 	};
 
-	//getCurrentScroll(호출하는 부모프레임요소, 기준점 보정값)
-	const getCurrentScroll = (selfEl, baseLine = 0) => {
-		const scroll = scrollFrame?.scrollTop - baseLine;
-		const modifiedScroll = scroll - selfEl?.offsetTop;
+	const getCurrentScroll = (baseLine = 0) => {
+		const scroll = Frame.scrollTop - baseLine;
+		//순서5- 부모컴포넌트에서 참조객체 연결된 값을 hook내부적으로 활용
+		const modifiedScroll = scroll - refEl.current?.offsetTop;
 		return modifiedScroll;
 	};
 
-	return { scrollTo, getCurrentScroll };
+	const handleScroll = useCallback(() => {
+		customHandler();
+	}, [customHandler]);
+
+	useEffect(() => {
+		setFrame(document.querySelector('.wrap'));
+	}, []);
+
+	useEffect(() => {
+		Frame?.addEventListener('scroll', handleScroll);
+		return () => Frame?.removeEventListener('scroll', handleScroll);
+	}, [Frame, handleScroll]);
+
+	//순서2 - 부모에서 해당 참조객체를 활용하도록 리턴
+	return { scrollTo, getCurrentScroll, Frame, refEl };
 }
