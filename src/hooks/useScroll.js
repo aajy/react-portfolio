@@ -11,6 +11,8 @@ export function useScroll(customHandler) {
 	};
 
 	const getCurrentScroll = useCallback(
+		//화면의 높이의 반을 baseLine으로 두면 컴포넌트 top높이에서 실행될 이벤트를,
+		//화면의 반높이 먼저 실행시키는 것.
 		(baseLine = -window.innerHeight / 2) => {
 			const scroll = Frame.scrollTop - baseLine;
 			const modifiedScroll = scroll - refEl.current?.offsetTop;
@@ -23,7 +25,7 @@ export function useScroll(customHandler) {
 	//내부적으로 getCurrentScroll값이 반환하고 있는 스크롤값과 연동시켜줌
 	const handleScroll = useCallback(() => {
 		const scroll = getCurrentScroll();
-		if (scroll >= 0) customHandler(scroll);
+		customHandler(scroll);
 	}, [getCurrentScroll, customHandler]);
 
 	useEffect(() => {

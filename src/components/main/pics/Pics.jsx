@@ -7,9 +7,11 @@ export default function Pics() {
 	const titEl2 = useRef(null);
 
 	const handleCustomScroll = scroll => {
-		titEl.current.style.transform = `translateX(${scroll}px)`;
-		titEl.current.style.opacity = 1 - scroll / 500;
-		titEl2.current.style.transform = `scale(${1 + scroll / 400}) translateX(${scroll * 0.5}px)`;
+		if (scroll >= 0) {
+			titEl.current.style.transform = `translateX(${scroll}px)`;
+			titEl.current.style.opacity = 1 - scroll / 500;
+			titEl2.current.style.transform = `scale(${1 + scroll / 400}) translateX(${scroll * 0.5}px)`;
+		}
 	};
 
 	const { refEl } = useScroll(handleCustomScroll);
